@@ -16,6 +16,8 @@ Some notes/instructions:
 - The list of `items` can be pulled into a `data.js` file, and imported in both `App` and `Game`.
 - For persisting across closing and reopening the tab, you can use the localStorage API. Because interacting with localStorage is a side-effect, it can be done within the `useEffect` hook.
 
+# Optional: Make it generic
+
 The solution you'll come up with will likely be tied very specifically to the problem at hand (storing the number of cookies). It would be neat to take some time and extract a _custom hook_, one that could be used in other situations when data needs to be persisted in localStorage.
 
 Create a new custom hook called `usePersistedState`. It's your job to figure out how to implement it, but it should be used like this:
@@ -24,4 +26,4 @@ Create a new custom hook called `usePersistedState`. It's your job to figure out
 const [numCookies, setNumCookies] = usePersistedState(1000, "num-cookies");
 ```
 
-(That second parameter is the name, to be used as a local storage key)
+It should function exactly like a useState hook. The only difference is the second parameter. It's a unique identifier.
