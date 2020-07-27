@@ -6,6 +6,12 @@ Sometimes, you'll want to share data with a sibling component.
 
 ---
 
+First, we creat a Context, and make it available to the React tree with <Context.Provider>:
+
+Next, we can consume that context anywhere below the Provider with useContext.
+
+---
+
 ### Example: An e-commerce app with search
 
 <img src={searchAppInit} style={{ maxWidth: '100%', maxHeight: '70vh' }} />

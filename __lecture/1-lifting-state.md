@@ -29,12 +29,13 @@ const App = () => {
 };
 
 const Header = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState(""); // second prop is a function
 
   return (
     <header>
       <Logo />
-      <SearchInput value={searchTerm} onChange={setSearchTerm} />
+      <SearchInput value={searchTerm} onChange={setSearchTerm} /> // "searchTerm"taking
+      it from prop and passing it from a prop component
     </header>
   );
 };
