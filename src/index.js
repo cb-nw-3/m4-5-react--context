@@ -7,7 +7,7 @@ import { GameProvider } from './components/GameContext';
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-  <GameProvider value>
+  <GameProvider>
     <App />    
   </GameProvider>, 
   rootElement);

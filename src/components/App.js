@@ -7,46 +7,14 @@ import Game from "./Game";
 import items from './data';
 import useInterval from "../hooks/use-interval.hook";
 
-const calculateCookiesPerSecond = (purchasedItems) => {
-  console.log(Object.values(purchasedItems));
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
 
-    return acc + value * numOwned;
-  }, 0);
-};
 // localStorage.clear();
 function App(props) {
-  const initItems = {
-      cursor: 0,
-      grandma: 0,
-      farm: 0,
-    };
-  const [numCookies, setNumCookies] = React.useState(
-    Number(localStorage.getItem('myNumCookies')) || 1000
-  );
-  const [purchasedItems, setPurchasedItems] = React.useState(
-    JSON.parse(localStorage.getItem('myPurchasedItems')) || initItems);
-
-  React.useEffect(() => {
-    localStorage.setItem('myNumCookies', numCookies);
-  }, [numCookies])
   
-
-
-  React.useEffect(() => {
-    localStorage.setItem('myPurchasedItems', JSON.stringify(purchasedItems));
-  }, [purchasedItems])
-  // const onChange = event => {setNumCookies};
-
-  
-
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
-  };
-
+  };  
+  
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
 
@@ -74,7 +42,7 @@ function App(props) {
       window.removeEventListener("keydown", handleKeydown);
     };
   });
-  const cookiesPerSecond = calculateCookiesPerSecond(purchasedItems);
+  // const cookiesPerSecond = calculateCookiesPerSecond(purchasedItems);
   return (
     <>
       <GlobalStyles />
