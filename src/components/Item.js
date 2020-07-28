@@ -8,7 +8,7 @@ const Item = ({ item, numOwned, handleClick, focusOnLoad }) => {
     if (focusOnLoad) {
       buttonRef.current.focus();
     }
-  }, []);
+  });
 
   let description = "descriptionMissing";
 

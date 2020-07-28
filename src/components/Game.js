@@ -1,67 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Item from "./Item";
 
 import cookieSrc, { ReactComponent } from "../cookie.svg";
-import Item from "./Item";
+import items from "../data";
 
 import useInterval from "../hooks/use-interval.hook";
 import useKeydown from "../hooks/use-keydown.hook";
 import useDocumentTitle from "../hooks/use-documentTitle.hook";
 
-const items = [
-  {
-    id: "cursor",
-    name: "Cursor",
-    type: "cps",
-    basePrice: 10,
-    cost: 10,
-    value: 1,
-
-    growth: 1.2,
-  },
-  {
-    id: "grandma",
-    name: "Grandma",
-    type: "cps",
-    basePrice: 100,
-    cost: 100,
-    value: 10,
-    growth: 1.15,
-  },
-  {
-    id: "farm",
-    name: "Farm",
-    type: "cps",
-    basePrice: 1000,
-    cost: 1000,
-    value: 80,
-    growth: 1.12,
-  },
-  {
-    id: "megaCursor",
-    name: "Mega Cursor",
-    type: "cursor",
-    basePrice: 50,
-    cost: 50,
-    value: 0,
-    growth: 1.3,
-  },
-];
-
-const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(0);
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-    megaCursor: 0,
-  });
-
+const Game = ({
+  numCookies,
+  setNumCookies,
+  purchasedItems,
+  setPurchasedItems,
+}) => {
   const cookiesPerClick = purchasedItems.megaCursor + 1;
 
   const addCookie = () => {
     setNumCookies(numCookies + cookiesPerClick);
+  };
+
+  const clearData = () => {
+    localStorage.clear();
+    setNumCookies(0);
+    setPurchasedItems({ cursor: 0, grandma: 0, farm: 0, megaCursor: 0 });
   };
 
   const setPrices = (array) => {
@@ -79,6 +43,7 @@ const Game = () => {
   useDocumentTitle(`${numCookies} cookies - Cookie Clicker`, `Cookie Clicker`);
 
   useKeydown("Space", addCookie);
+  useKeydown("KeyQ", clearData);
 
   const purchaseItem = (item) => {
     if (numCookies < item.cost) {
