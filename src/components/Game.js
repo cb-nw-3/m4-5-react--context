@@ -7,11 +7,16 @@ import { Link } from "react-router-dom";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from './data';
+import { GameContext } from './GameContext';
 
-
-
-
-const Game = ({numCookies, setNumCookies, items, cookiesPerSecond, purchasedItems, setPurchasedItems}) => {
+const Game = () => {
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerSecond,
+  } = React.useContext(GameContext);
   
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);

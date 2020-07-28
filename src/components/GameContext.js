@@ -1,4 +1,5 @@
 import React from 'react';
+import items from './data';
 
 export const GameContext = React.createContext(null);
 
@@ -39,7 +40,7 @@ children }) => {
       <GameContext.Provider 
         value={{
         numCookies,
-        SetNumCookies,
+        setNumCookies,
         purchasedItems,
         setPurchasedItems,
         cookiesPerSecond: 

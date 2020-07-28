@@ -6,19 +6,24 @@ import Home from "./Home";
 import Game from "./Game";
 import items from './data';
 import useInterval from "../hooks/use-interval.hook";
-
+import { GameContext } from './GameContext';
 
 // localStorage.clear();
-function App(props) {
-  
+function App() {
+  const { 
+    numCookies, 
+    setNumCookies,
+    cookiesPerSecond 
+  } = React.useContext(GameContext);
+
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };  
-  
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
 
-    setNumCookies(numCookies + numOfGeneratedCookies);
+  useInterval(() => {
+    // const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+
+    setNumCookies(numCookies + cookiesPerSecond);
   }, 1000);
 
   React.useEffect(() => {
@@ -42,7 +47,7 @@ function App(props) {
       window.removeEventListener("keydown", handleKeydown);
     };
   });
-  // const cookiesPerSecond = calculateCookiesPerSecond(purchasedItems);
+
   return (
     <>
       <GlobalStyles />
@@ -51,14 +56,7 @@ function App(props) {
           <Home />
         </Route>
         <Route path="/game">
-          <Game 
-          numCookies={numCookies} 
-          setNumCookies={setNumCookies} 
-          items={items}
-          cookiesPerSecond={cookiesPerSecond}
-          purchasedItems={purchasedItems}
-          setPurchasedItems={setPurchasedItems}
-          />
+          <Game />
         </Route>
       </Router>
     </>
