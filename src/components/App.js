@@ -17,6 +17,7 @@ const calculateCookiesPerSecond = (purchasedItems) => {
     return acc + value * numOwned;
   }, 0);
 };
+// localStorage.clear();
 function App(props) {
   const initItems = {
       cursor: 0,
