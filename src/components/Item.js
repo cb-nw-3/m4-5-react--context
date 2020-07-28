@@ -1,63 +1,59 @@
 import React from "react";
+
 import styled from "styled-components";
 
-const Item = ({
-  index,
-  name,
-  cost,
-  value,
-  numOwned,
-  handleAttemptedPurchase,
-}) => {
-  const ref = React.useRef(null);
+const Item = ({ name, cost, value, numOwned, handleClick, isFirst, type }) => {
+  const buttonRef = React.useRef(null);
 
   React.useEffect(() => {
-    if (index === 0) {
-      ref.current.focus();
+    if (isFirst) {
+      buttonRef.current.focus();
     }
-  }, [index]);
+  }, [isFirst]);
 
   return (
-    <Wrapper ref={ref} onClick={handleAttemptedPurchase}>
-      <Left>
+    <Wrapper onClick={handleClick} ref={buttonRef}>
+      <div>
         <Name>{name}</Name>
-        <Info>
-          Cost: {cost} cookie(s). Produces {value} cookies/second.
-        </Info>
-      </Left>
-      <Right>{numOwned}</Right>
+        <Effect>
+          Cost: {cost} cookies.
+          {type === "tick"
+            ? ` Produces ${value} cookies/second`
+            : ` Adds ${value} cookies per click`}
+        </Effect>
+      </div>
+      <Num>{numOwned}</Num>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background: transparent;
   border: none;
-  border-bottom: 1px solid #444;
-  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 320px;
   text-align: left;
-  padding: 15px 0;
+  border-bottom: 1px solid lightgrey;
+  padding: 10px 0;
 `;
 
-const Left = styled.div`
-  flex: 1;
+const Name = styled.h2`
+  font-size: 1.3em;
+  font-weight: 700;
+  color: white;
 `;
 
-const Name = styled.h4`
-  font-size: 22px;
+const Effect = styled.p`
+  color: lightgrey;
 `;
 
-const Info = styled.div`
-  color: #ccc;
-  font-size: 15px;
-`;
-
-const Right = styled.div`
-  font-size: 32px;
-  padding: 0 20px;
+const Num = styled.p`
+  font-size: 2em;
+  color: white;
+  font-weight: 600;
 `;
 
 export default Item;
