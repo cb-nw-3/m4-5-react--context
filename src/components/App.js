@@ -6,13 +6,22 @@ import Home from "./Home";
 import Game from "./Game";
 import { GameContext } from "./GameContext";
 
+import useInterval from "../hooks/use-interval.hook";
+
 function App(props) {
   const {
     numCookies,
     setNumCookies,
     purchasedItems,
     setPurchasedItems,
+    calculateCookiesPerSecond,
   } = React.useContext(GameContext);
+
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+
+    setNumCookies(numCookies + numOfGeneratedCookies);
+  }, 1000);
 
   React.useEffect(() => {
     const storedNumCookies = localStorage.getItem("numCookies");
