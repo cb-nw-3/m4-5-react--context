@@ -9,29 +9,29 @@ import useInterval from "../hooks/use-interval.hook";
 import useStickyState from "../hooks/useStickyState.hook";
 
 function App(props) {
-  const [numCookies, setNumCookies] = useStickyState(100, "numCookies");
-  const [purchasedItems, setPurchasedItems] = useStickyState(
-    {
-      cursor: 0,
-      grandma: 0,
-      farm: 0,
-      megacursor: 0,
-    },
-    "purchasedItems"
-  );
-  const [cookiesPerClick, setCookiesPerClick] = React.useState(1);
-  const [items, setItems] = useStickyState(itemsArray, "items");
+  // const [numCookies, setNumCookies] = useStickyState(100, "numCookies");
+  // const [purchasedItems, setPurchasedItems] = useStickyState(
+  //   {
+  //     cursor: 0,
+  //     grandma: 0,
+  //     farm: 0,
+  //     megacursor: 0,
+  //   },
+  //   "purchasedItems"
+  // );
+  // const [cookiesPerClick, setCookiesPerClick] = React.useState(1);
+  // const [items, setItems] = useStickyState(itemsArray, "items");
 
-  const calculateCookiesPerTick = (listOfItems) => {
-    let total = 0;
-    const filteredItems = items.filter((item) => {
-      return item.type === "tick";
-    });
-    filteredItems.forEach((item) => {
-      total += listOfItems[`${item.id}`] * item.value;
-    });
-    return total;
-  };
+  // const calculateCookiesPerTick = (listOfItems) => {
+  //   let total = 0;
+  //   const filteredItems = items.filter((item) => {
+  //     return item.type === "tick";
+  //   });
+  //   filteredItems.forEach((item) => {
+  //     total += listOfItems[`${item.id}`] * item.value;
+  //   });
+  //   return total;
+  // };
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
