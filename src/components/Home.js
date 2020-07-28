@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { GameContext } from "./App";
-
 const Home = () => {
   return (
     <Wrapper>

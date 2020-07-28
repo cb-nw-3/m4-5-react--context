@@ -4,18 +4,15 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
-import items from "./data";
-
-export const GameContext = React.createContext(null);
+import { GameContext } from "./GameContext";
 
 function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+  } = React.useContext(GameContext);
 
   React.useEffect(() => {
     const storedNumCookies = localStorage.getItem("numCookies");
@@ -34,9 +31,7 @@ function App(props) {
   });
 
   return (
-    <GameContext.Provider
-      value={{ numCookies, setNumCookies, purchasedItems, setPurchasedItems }}
-    >
+    <>
       <GlobalStyles />
       <Router>
         <Route exact path="/">
@@ -46,7 +41,7 @@ function App(props) {
           <Game />
         </Route>
       </Router>
-    </GameContext.Provider>
+    </>
   );
 }
 

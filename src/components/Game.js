@@ -7,7 +7,7 @@ import useInterval from "../hooks/use-interval.hook";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "./data";
-import { GameContext } from "./App";
+import { GameContext } from "./GameContext";
 
 const calculateCookiesPerSecond = (purchasedItems) => {
   return Object.keys(purchasedItems).reduce((acc, itemId) => {
