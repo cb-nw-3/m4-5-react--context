@@ -4,56 +4,52 @@ import { Link } from "react-router-dom";
 
 import useInterval from "../hooks/use-interval.hook";
 
+import { GameContext } from "../components/GameContext";
+
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-const Game = ({
-  gameItems,
-  handleCookies,
-  numCookies,
-  setNumCookies,
-  purchasedItems,
-  setPurchasedItems,
-}) => {
-  const incrementCookies = () => {
-    setNumCookies((c) => c + 1);
-  };
+const Game = () => {
+  // #### USE CONTEXT ####
+  //these are all of the states, functions, and data that we want to pass into
+  //the Game component, without having to create any props
 
+  const {
+    items,
+    calculateCookiesPerSecond,
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    incrementCookies,
+    useDocumentTitle,
+    useHandleKeydown,
+  } = React.useContext(GameContext);
+
+  // #### FUNCTIONS & HOOKS #####
+
+  //allows generation of cookies based on current item inventory every passing
+  //second
   useInterval(() => {
-    const numOfGeneratedCookies = handleCookies(purchasedItems, gameItems);
-
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
     setNumCookies(numCookies + numOfGeneratedCookies);
   }, 1000);
 
-  React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+  useDocumentTitle(numCookies);
 
-    return () => {
-      document.title = "Cookie Clicker Workshop";
-    };
-  }, [numCookies]);
+  useHandleKeydown("Space", incrementCookies);
 
-  React.useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === "Space") {
-        incrementCookies();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeydown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  });
+  // #### RENDER COMPONENT #####
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{handleCookies(purchasedItems, gameItems)}</strong> cookies
-          per second
+          <strong>
+            {calculateCookiesPerSecond(purchasedItems, items)}
+          </strong>{" "}
+          cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
@@ -62,7 +58,7 @@ const Game = ({
 
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
-        {gameItems.map((item, index) => {
+        {items.map((item, index) => {
           return (
             <Item
               key={item.id}
@@ -76,7 +72,6 @@ const Game = ({
                   alert("Cannot afford item");
                   return;
                 }
-
                 setNumCookies(numCookies - item.cost);
                 setPurchasedItems({
                   ...purchasedItems,
@@ -87,10 +82,13 @@ const Game = ({
           );
         })}
       </ItemArea>
+
       <HomeLink to="/">Return home</HomeLink>
     </Wrapper>
   );
 };
+
+// ################### STYLED COMPONENTS ######################
 
 const Wrapper = styled.div`
   display: flex;
