@@ -7,37 +7,20 @@ import useInterval from "../hooks/use-interval.hook";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
-
-const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
-
+const Game = ({
+  gameItems,
+  handleCookies,
+  numCookies,
+  setNumCookies,
+  purchasedItems,
+  setPurchasedItems,
+}) => {
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
 
   useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+    const numOfGeneratedCookies = handleCookies(purchasedItems, gameItems);
 
     setNumCookies(numCookies + numOfGeneratedCookies);
   }, 1000);
@@ -69,7 +52,7 @@ const Game = () => {
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
+          <strong>{handleCookies(purchasedItems, gameItems)}</strong> cookies
           per second
         </Indicator>
         <Button onClick={incrementCookies}>
@@ -79,7 +62,7 @@ const Game = () => {
 
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
-        {items.map((item, index) => {
+        {gameItems.map((item, index) => {
           return (
             <Item
               key={item.id}

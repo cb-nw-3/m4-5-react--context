@@ -5,7 +5,21 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 
+import { items } from "../data";
+
+import { calculateCookiesPerSecond } from "../utils";
+
 function App(props) {
+  //####################### STATES #############################
+  const [numCookies, setNumCookies] = React.useState(1000);
+
+  const [purchasedItems, setPurchasedItems] = React.useState({
+    cursor: 0,
+    grandma: 0,
+    farm: 0,
+  });
+
+  //#################### RENDER APP ############################
   return (
     <>
       <GlobalStyles />
@@ -14,7 +28,14 @@ function App(props) {
           <Home />
         </Route>
         <Route path="/game">
-          <Game />
+          <Game
+            handleCookies={calculateCookiesPerSecond}
+            gameItems={items}
+            numCookies={numCookies}
+            setNumCookies={setNumCookies}
+            purchasedItems={purchasedItems}
+            setPurchasedItems={setPurchasedItems}
+          />
         </Route>
       </Router>
     </>
