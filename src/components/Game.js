@@ -5,32 +5,34 @@ import Item from "./Item";
 import useKeydown from "../hooks/useKeydown.hook";
 import useDocumentTitle from "../hooks/useDocumentTitle.hook";
 import cookieSrc from "../cookie.svg";
+import { GameContext } from "./GameContext";
 
-const Game = ({
-  numCookies,
-  setNumCookies,
-  purchasedItems,
-  setPurchasedItems,
-  cookiesPerClick,
-  setCookiesPerClick,
-  items,
-  setItems,
-  calculateCookiesPerTick,
-}) => {
-  const calculateCookiesPerClick = () => {
-    let numToAdd = purchasedItems["megacursor"] * 2;
-    console.log("num to Add", numToAdd);
-    return numToAdd;
-  };
+const Game = () => {
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerClick,
+    setCookiesPerClick,
+    items,
+    setItems,
+    calculateCookiesPerTick,
+  } = React.useContext(GameContext);
 
   const addOneCookie = () => {
     setNumCookies(numCookies + cookiesPerClick);
   };
 
   React.useEffect(() => {
+    const calculateCookiesPerClick = () => {
+      let numToAdd = purchasedItems["megacursor"] * 2;
+      console.log("num to Add", numToAdd);
+      return numToAdd;
+    };
     const numbOfCookiesPerClick = calculateCookiesPerClick();
     setCookiesPerClick(1 + numbOfCookiesPerClick);
-  }, [purchasedItems]);
+  }, [purchasedItems, setCookiesPerClick]);
 
   useDocumentTitle(`${numCookies} cookies`, `Click that COOKIE`);
 

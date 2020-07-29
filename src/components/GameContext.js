@@ -1,5 +1,6 @@
 import React from "react";
-import useStickyState from '../hooks/useStickyState.hook'
+import useStickyState from "../hooks/useStickyState.hook";
+import itemsArray from "../data";
 
 export const GameContext = React.createContext(null);
 
@@ -28,13 +29,21 @@ export const GameProvider = ({ children }) => {
     return total;
   };
 
-  return <GameContext.Provider value={{numCookies={numCookies},
-  setNumCookies={setNumCookies},
-  purchasedItems={purchasedItems},
-  setPurchasedItems={setPurchasedItems},
-  cookiesPerClick={cookiesPerClick},
-  setCookiesPerClick={setCookiesPerClick},
-  items={items},
-  setItems={setItems},
-calculateCookiesPerTick = {calculateCookiesPerTick}}}>{children}</GameContext.Provider>;
+  return (
+    <GameContext.Provider
+      value={{
+        numCookies: numCookies,
+        setNumCookies,
+        purchasedItems,
+        setPurchasedItems,
+        cookiesPerClick,
+        setCookiesPerClick,
+        items,
+        setItems,
+        calculateCookiesPerTick,
+      }}
+    >
+      {children}
+    </GameContext.Provider>
+  );
 };
