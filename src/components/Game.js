@@ -30,6 +30,8 @@ const Game = () => {
 
   //allows generation of cookies based on current item inventory every passing
   //second
+  //already completed exercise 3 here
+
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
     setNumCookies(numCookies + numOfGeneratedCookies);
