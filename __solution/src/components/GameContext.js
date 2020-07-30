@@ -19,13 +19,14 @@ export const GameProvider = ({ children }) => {
   );
 
   const calculateCookiesPerSecond = (purchasedItems) => {
-    return Object.keys(purchasedItems).reduce((acc, itemId) => {
-      const numOwned = purchasedItems[itemId];
-      const item = items.find((item) => item.id === itemId);
-      const value = item.value;
+    const itemAmountArr = Object.values(purchasedItems);
+    let totalCookies = 0;
 
-      return acc + value * numOwned;
-    }, 0);
+    items.forEach((item) => {
+      totalCookies += item.value * itemAmountArr[items.indexOf(item)];
+    });
+
+    return totalCookies;
   };
 
   useInterval(() => {
