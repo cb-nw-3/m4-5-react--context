@@ -9,9 +9,6 @@ import Game from "./Game";
 
 import { GameContext } from "./GameContext";
 
-import items from "../data";
-import useLocalStorage from "../hooks/use-local-storage";
-
 function App(props) {
   const { numCookies, setNumCookies, cookiesPerSecond } = React.useContext(
     GameContext
@@ -20,8 +17,6 @@ function App(props) {
   useInterval(() => {
     setNumCookies(numCookies + cookiesPerSecond);
   }, 1000);
-
-
 
   return (
     <>

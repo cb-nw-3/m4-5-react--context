@@ -2,6 +2,8 @@ import React from "react";
 import items from "../data";
 import useLocalStorage from "../hooks/use-local-storage";
 
+import useKeyDown from "../hooks/use-event-keydown";
+
 export const GameContext = React.createContext(null);
 
 export const GameProvider = ({ children }) => {
@@ -14,6 +16,20 @@ export const GameProvider = ({ children }) => {
     }
 
     const [purchasedItems, setPurchasedItems] = useLocalStorage(initialItems, 'items');
+
+    const clearData = () => {
+        localStorage.clear();
+        setNumCookies(10);
+        setPurchasedItems({
+            cursor: 0,
+            grandma: 0,
+            farm: 0,
+        });
+    };
+    useKeyDown({
+        pressedKey: "Delete",
+        callbackFunction: clearData,
+    })
 
     const calculateCookiesPerSecond = (purchasedItems) => {
         return Object.keys(purchasedItems).reduce((acc, itemId) => {
