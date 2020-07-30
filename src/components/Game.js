@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { GameContext } from '../components/GameContext';
 import useInterval from '../hooks/use-interval.hook';
 
 import cookieSrc from '../cookie.svg';
@@ -24,13 +24,12 @@ const calculateCookiesPerSecond = (purchasedItems) => {
 };
 
 const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+  } = useContext(GameContext);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
