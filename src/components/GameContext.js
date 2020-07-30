@@ -9,7 +9,7 @@ export const GameProvider = ({ children }) => {
     cursor: 10,
     grandma: 100,
     farm: 1000,
-    megaCursor: 1000,
+    megaCursor: 10000,
   });
 
   const [purchasedItems, setPurchasedItems] = useState({
