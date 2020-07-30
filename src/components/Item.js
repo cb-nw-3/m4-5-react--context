@@ -8,7 +8,7 @@ const Item = ({ item, numOwned, handleClick, focusOnLoad }) => {
     if (focusOnLoad) {
       buttonRef.current.focus();
     }
-  });
+  }, []);
 
   let description = "descriptionMissing";
 
@@ -32,6 +32,13 @@ const Item = ({ item, numOwned, handleClick, focusOnLoad }) => {
           <span>Cost: {item.cost} cookie(s). </span>
           <span>{description} </span>
         </Description>
+        {numOwned >= 1 && item.type === "cps" && (
+          <Production>
+            Currently producing <strong>{numOwned * item.value} </strong>
+            {numOwned * item.value === 1 ? "cookie " : "cookies "}
+            per second.
+          </Production>
+        )}
       </div>
       <Amount>{numOwned}</Amount>
     </Wrapper>
@@ -46,7 +53,7 @@ const Wrapper = styled.button`
   border: none;
   border-bottom: 1px white solid;
   background-color: transparent;
-  padding: 20px 0;
+  padding: 18px 0;
 `;
 
 const Title = styled.h2`
@@ -57,6 +64,19 @@ const Title = styled.h2`
 
 const Description = styled.div`
   color: grey;
+  & strong {
+    color: white;
+  }
+`;
+
+const Production = styled.div`
+  color: grey;
+  margin-top: 4px;
+  text-align: left;
+
+  & strong {
+    color: white;
+  }
 `;
 
 const Amount = styled.h2`

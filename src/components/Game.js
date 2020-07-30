@@ -25,7 +25,13 @@ const Game = ({
   const clearData = () => {
     localStorage.clear();
     setNumCookies(0);
-    setPurchasedItems({ cursor: 0, grandma: 0, farm: 0, megaCursor: 0 });
+    setPurchasedItems({
+      cursor: 0,
+      grandma: 0,
+      farm: 0,
+      portal: 0,
+      megaCursor: 0,
+    });
   };
 
   const setPrices = (array) => {
@@ -100,6 +106,7 @@ const Game = ({
           if (index === 0) {
             firstItem = true;
           }
+          console.log(entry, purchasedItems);
           return (
             <Item
               key={entry.id}

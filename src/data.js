@@ -28,6 +28,15 @@ const items = [
     growth: 1.12,
   },
   {
+    id: "portal",
+    name: "Portal",
+    type: "cps",
+    basePrice: 10000,
+    cost: 10000,
+    value: 500,
+    growth: 1.12,
+  },
+  {
     id: "megaCursor",
     name: "Mega Cursor",
     type: "cursor",

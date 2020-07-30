@@ -10,7 +10,7 @@ import Game from "./Game";
 function App(props) {
   const [numCookies, setNumCookies] = usePersistedState(0, "num-cookies");
   const [purchasedItems, setPurchasedItems] = usePersistedState(
-    { cursor: 0, grandma: 0, farm: 0, megaCursor: 0 },
+    { cursor: 0, grandma: 0, farm: 0, portal: 0, megaCursor: 0 },
     "purchased-items"
   );
 
