@@ -16,9 +16,14 @@ function App() {
     cookiesPerSecond 
   } = React.useContext(GameContext);
 
-  const incrementCookies = () => {
-    setNumCookies((c) => c + 1);
-  };  
+  React.useEffect(() => {
+    const localStorageTerm = localStorage.getItem('end-time');
+    const lastTime = Number(localStorageTerm) || new Date().getTime();
+    const currentTime = new Date().getTime();
+
+    const timeElapsed = currentTime - lastTime;
+    setNumCookies(numCookies + cookiesPerSecond * Math.floor(timeElapsed/1000));
+    }, [])
 
   useInterval(() => {
     // const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
@@ -34,19 +39,11 @@ function App() {
     };
   }, [numCookies]);
 
-  React.useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === "Space") {
-        incrementCookies();
-      }
-    };
+  
 
-    window.addEventListener("keydown", handleKeydown);
+ 
 
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  });
+
 
   return (
     <>

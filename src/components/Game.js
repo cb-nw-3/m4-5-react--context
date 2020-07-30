@@ -17,10 +17,24 @@ const Game = () => {
     setPurchasedItems,
     cookiesPerSecond,
   } = React.useContext(GameContext);
-  
+
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
+
+  React.useEffect(() => {
+    const handleKeydown = (ev) => {
+      if (ev.code === "Space") {
+        incrementCookies();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  }, []);
 
   return (
     <Wrapper>

@@ -18,9 +18,8 @@ children }) => {
   
     React.useEffect(() => {
       localStorage.setItem('myNumCookies', numCookies);
+      localStorage.setItem('end-time', new Date().getTime());
     }, [numCookies])
-    
-  
   
     React.useEffect(() => {
       localStorage.setItem('myPurchasedItems', JSON.stringify(purchasedItems));
