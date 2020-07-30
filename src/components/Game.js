@@ -5,17 +5,20 @@ import Item from "./Item";
 
 import cookieSrc, { ReactComponent } from "../cookie.svg";
 import items from "../data";
+import { GameContext } from "./GameContext";
 
-import useInterval from "../hooks/use-interval.hook";
 import useKeydown from "../hooks/use-keydown.hook";
 import useDocumentTitle from "../hooks/use-documentTitle.hook";
 
-const Game = ({
-  numCookies,
-  setNumCookies,
-  purchasedItems,
-  setPurchasedItems,
-}) => {
+const Game = ({}) => {
+  const {
+    numCookies,
+    setNumCookies,
+    cookiesPerSec,
+    purchasedItems,
+    setPurchasedItems,
+  } = React.useContext(GameContext);
+
   const cookiesPerClick = purchasedItems.megaCursor + 1;
 
   const addCookie = () => {
@@ -60,35 +63,16 @@ const Game = ({
         ...purchasedItems,
         [item.id]: purchasedItems[item.id] + 1,
       });
-      calculateCookiesPerSec(purchasedItems);
     }
   };
-
-  const calculateCookiesPerSec = (purchasedItems) => {
-    let numOfGeneratedCookies = 0;
-
-    items.forEach((item) => {
-      numOfGeneratedCookies =
-        numOfGeneratedCookies + purchasedItems[item.id] * item.value;
-    });
-
-    return numOfGeneratedCookies;
-  };
-
-  useInterval(() => {
-    const cookiesPerSec = calculateCookiesPerSec(purchasedItems);
-    setNumCookies(numCookies + cookiesPerSec);
-  }, 1000);
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSec(purchasedItems)}</strong>{" "}
-          {calculateCookiesPerSec(purchasedItems) === 1
-            ? "cookie per second"
-            : "cookies per second"}
+          <strong>{cookiesPerSec}</strong>{" "}
+          {cookiesPerSec === 1 ? "cookie per second" : "cookies per second"}
           <div>
             <strong>{cookiesPerClick}</strong>{" "}
             {cookiesPerClick === 1 ? "cookie per click" : "cookies per click"}
