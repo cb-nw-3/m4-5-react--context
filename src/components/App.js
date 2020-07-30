@@ -36,8 +36,19 @@ function App(props) {
 
   React.useEffect(() => {
     localStorage.setItem("numCookies", JSON.stringify(numCookies));
+    localStorage.setItem("timeStamp", JSON.stringify(Date.now()));
     localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
   });
+
+  React.useEffect(() => {
+    const timeStamp = localStorage.getItem("timeStamp");
+    const cookies = JSON.parse(localStorage.getItem("numCookies"));
+    const currentTime = Date.now();
+
+    const timeAwayInSeconds = (timeStamp - currentTime) * 1000;
+    const cookiesPerSecond = calculateCookiesPerSecond(purchasedItems);
+    setNumCookies(cookies + timeAwayInSeconds * cookiesPerSecond);
+  }, []);
 
   return (
     <>
