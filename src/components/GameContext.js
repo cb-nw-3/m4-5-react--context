@@ -5,23 +5,36 @@ import items from "./data";
 export const GameContext = React.createContext(null);
 
 export const GameProvider = ({ children }) => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
+  const purchases = JSON.parse(localStorage.getItem("purchasedItems")) || {
     cursor: 0,
     grandma: 0,
     farm: 0,
-  });
+  };
+
+  const [purchasedItems, setPurchasedItems] = React.useState(purchases);
 
   const calculateCookiesPerSecond = (purchasedItems) => {
-    return Object.keys(purchasedItems).reduce((acc, itemId) => {
-      const numOwned = purchasedItems[itemId];
-      const item = items.find((item) => item.id === itemId);
-      const value = item.value;
+    const itemAmountArr = Object.values(purchasedItems);
+    let totalCookies = 0;
 
-      return acc + value * numOwned;
-    }, 0);
+    items.forEach((item) => {
+      totalCookies += item.value * itemAmountArr[items.indexOf(item)];
+    });
+
+    return totalCookies;
   };
+
+  const timeStamp = localStorage.getItem("timeStamp");
+  const cookies = JSON.parse(localStorage.getItem("numCookies"));
+
+  const currentTime = Date.now();
+
+  const timeAwayInSeconds = Math.floor((currentTime - timeStamp) / 1000);
+  console.log("time away", timeAwayInSeconds);
+  const cookiesPerSecond = calculateCookiesPerSecond(purchases);
+  let initialCookies = cookies + timeAwayInSeconds * cookiesPerSecond || 1000;
+
+  const [numCookies, setNumCookies] = React.useState(initialCookies);
 
   return (
     <GameContext.Provider
