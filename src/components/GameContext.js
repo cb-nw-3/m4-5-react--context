@@ -30,7 +30,6 @@ export const GameProvider = ({ children }) => {
   const currentTime = Date.now();
 
   const timeAwayInSeconds = Math.floor((currentTime - timeStamp) / 1000);
-  console.log("time away", timeAwayInSeconds);
   const cookiesPerSecond = calculateCookiesPerSecond(purchases);
   let initialCookies = cookies + timeAwayInSeconds * cookiesPerSecond || 1000;
 
