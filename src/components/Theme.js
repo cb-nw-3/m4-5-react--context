@@ -5,7 +5,7 @@ export const lightTheme = {
 }
 
 export const darkTheme = {
-    body: '#363537',
+    body: 'linear-gradient(147deg, #000000 0%, #2c3e50 74%)',
     text: '#FAFAFA',
     gradient: 'linear-gradient(#091236, #1E215D)',
 }

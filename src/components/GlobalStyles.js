@@ -68,7 +68,16 @@ export default createGlobalStyle`
         transition: all 0.25s linear;
     }
 
+    h4{
+        color: ${({ theme }) => theme.text};
+    }
+
+    div{
+        color: ${({ theme }) => theme.text};
+    }
+
     a {
         text-decoration: none;
+        color: ${({ theme }) => theme.text};
     }
 `;
