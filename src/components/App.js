@@ -14,6 +14,24 @@ function App(props) {
     farm: 0,
   });
 
+  // get stored data after render
+  React.useEffect(() => {
+    const memoryCookies = localStorage.getItem('numOfCookies');
+    const memoryItems = localStorage.getItem('numOfItems');
+    // update state if data not empty
+    if (memoryCookies) {
+      setNumCookies(JSON.parse(memoryCookies));
+    }
+    if (memoryItems) {
+      setPurchasedItems(JSON.parse(memoryItems))
+    }
+  }, []);
+  // create/update stored data after render
+  React.useEffect(() => {
+    localStorage.setItem('numOfCookies', JSON.stringify(numCookies));
+    localStorage.setItem('numOfItems', JSON.stringify(purchasedItems));
+  });
+
   return (
     <>
       <GlobalStyles />
