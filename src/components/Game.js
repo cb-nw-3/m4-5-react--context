@@ -88,12 +88,25 @@ const Game = () => {
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100vh;
+
+  @media (min-width: 600px){
+    flex-direction: row;
+  }
 `;
+
 const GameArea = styled.div`
   flex: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
   place-items: center;
+
+  @media (min-width: 600px){
+    display: grid;
+    place-items: center;
+  }
 `;
 const Button = styled.button`
   border: none;
@@ -112,7 +125,7 @@ const Cookie = styled.img`
 
 const ItemArea = styled.div`
   height: 100%;
-  padding-right: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -126,13 +139,18 @@ const SectionTitle = styled.h3`
 `;
 
 const Indicator = styled.div`
-  position: absolute;
+  margin-bottom: 20px;
   width: 250px;
+  text-align: center;
+
+  @media (min-width: 600px){
+  display: block;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   margin: auto;
-  text-align: center;
+  }
 `;
 
 const Total = styled.h3`
