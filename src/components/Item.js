@@ -37,7 +37,6 @@ const Wrapper = styled.button`
   background: transparent;
   border: none;
   border-bottom: 1px solid #444;
-  color: #fff;
   text-align: left;
   padding: 15px 0;
 `;
@@ -51,7 +50,7 @@ const Name = styled.h4`
 `;
 
 const Info = styled.div`
-  color: #ccc;
+
   font-size: 15px;
 `;
 

@@ -121,7 +121,8 @@ const ItemArea = styled.div`
 const SectionTitle = styled.h3`
   text-align: center;
   font-size: 32px;
-  color: yellow;
+  color: #9b870c;
+
 `;
 
 const Indicator = styled.div`
@@ -136,14 +137,13 @@ const Indicator = styled.div`
 
 const Total = styled.h3`
   font-size: 28px;
-  color: lime;
+  color: #0da715;
 `;
 
 const HomeLink = styled(Link)`
   position: absolute;
   top: 15px;
   left: 15px;
-  color: #666;
 `;
 
 export default Game;
