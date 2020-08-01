@@ -1,63 +1,56 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import addCommas from '../functions/addCommas';
 
-const Item = ({
-  index,
-  name,
-  cost,
-  value,
-  numOwned,
-  handleAttemptedPurchase,
-}) => {
-  const ref = React.useRef(null);
+const Item = ({ info, numOwned, handleClick, index }) => {
+  const ref = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (index === 0) {
       ref.current.focus();
     }
   }, [index]);
 
   return (
-    <Wrapper ref={ref} onClick={handleAttemptedPurchase}>
-      <Left>
-        <Name>{name}</Name>
-        <Info>
-          Cost: {cost} cookie(s). Produces {value} cookies/second.
-        </Info>
-      </Left>
-      <Right>{numOwned}</Right>
-    </Wrapper>
+    <ItemWrapper ref={ref} onClick={handleClick}>
+      <div>
+        <div>{info.name}</div>
+        <div>
+          Cost: {addCommas(info.cost)} cookie(s). Produces {info.value}{' '}
+          cookie(s)/
+          {info.frequency}
+        </div>
+      </div>
+      <Score>{numOwned}</Score>
+    </ItemWrapper>
   );
 };
 
-const Wrapper = styled.button`
-  width: 100%;
+const ItemWrapper = styled.button`
   display: flex;
-  align-items: center;
-  background: transparent;
+  justify-content: space-between;
   border: none;
-  border-bottom: 1px solid #444;
-  color: #fff;
-  text-align: left;
-  padding: 15px 0;
+  border-bottom: 1px solid gray;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  background-color: transparent;
+  color: white;
+  div {
+    text-align: left;
+  }
+  div > div:first-child {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 `;
 
-const Left = styled.div`
-  flex: 1;
-`;
-
-const Name = styled.h4`
-  font-size: 22px;
-`;
-
-const Info = styled.div`
-  color: #ccc;
-  font-size: 15px;
-`;
-
-const Right = styled.div`
-  font-size: 32px;
-  padding: 0 20px;
+const Score = styled.div`
+  font-size: 100%;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
 `;
 
 export default Item;
