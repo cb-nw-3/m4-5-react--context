@@ -83,7 +83,7 @@ const Game = () => {
     const reducerClick = (accumulator, current) =>
       accumulator + current.value * purchasedItems[current.id];
     additionalCookies.perClick = 1 + itemsPerClick.reduce(reducerClick, 0);
-    console.log(additionalCookies);
+    console.log('Additional Cookies per Sec', additionalCookies);
 
     return additionalCookies;
   };
@@ -104,6 +104,7 @@ const Game = () => {
         Math.abs(timeWhenLoading - new Date(loadedInfo.time)) / 1000
       );
       console.log(
+        'On load Info',
         numCookies,
         calculateCookiesPerTick(purchasedItems),
         purchasedItems,
@@ -184,13 +185,15 @@ const Wrapper = styled.div`
 const GameArea = styled.div`
   flex: 1;
   display: grid;
-  place-items: center;
+  /* place-items: center; */
+  /* border: 2px solid red; */
 `;
 
 const Background = styled.div`
   position: relative;
-  width: 400px;
-  height: 500px;
+  top: 80px;
+  width: 300px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
