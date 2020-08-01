@@ -12,18 +12,15 @@ import { GameContext } from './GameContext';
 const { items } = require('../data');
 
 const Game = (props) => {
-
-  const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond } = React.useContext(
+  const { 
+    numCookies, 
+    setNumCookies, 
+    purchasedItems, 
+    setPurchasedItems, 
+    calculateCookiesPerSecond, 
+  } = React.useContext(
     GameContext
   );
-
-  // const [numCookies, setNumCookies] = React.useState(1000);
-
-  // const [purchasedItems, setPurchasedItems] = React.useState({
-  //   cursor: 0,
-  //   grandma: 0,
-  //   farm: 0,
-  // });
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
