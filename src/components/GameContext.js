@@ -41,6 +41,27 @@ export const GameProvider = ({ children }) => {
         }, 0);
     };
 
+    React.useEffect(() => {
+        const date = new Date();
+        const hours = date.getHours() * 3600;
+        const min = date.getMinutes() * 60;
+        const sec = hours + min + date.getSeconds();
+
+        const leaveSec = localStorage.getItem("leaveSec");
+        const cookies = JSON.parse(localStorage.getItem("cookies"));
+        console.log(sec);
+        console.log(leaveSec);
+
+
+        const secondsAway = (sec - leaveSec);
+        const cookiesPerSecondAway = calculateCookiesPerSecond(purchasedItems);
+        console.log(cookiesPerSecondAway)
+        const newCookies = cookies + (secondsAway * cookiesPerSecondAway)
+        console.log('cookies from local storage', cookies)
+        console.log(newCookies)
+        setNumCookies(newCookies);
+    }, []);
+
     return (
         <GameContext.Provider value={{
             numCookies,
