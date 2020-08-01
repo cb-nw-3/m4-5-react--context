@@ -5,14 +5,12 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 
-function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
+import { GameContext } from './GameContext';
 
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+function App(props) {
+  const { numCookies, setNumCookies, purchasedItems, setPurchasedItems } = React.useContext(
+    GameContext
+  );
 
   // get stored data after render
   React.useEffect(() => {
@@ -25,7 +23,7 @@ function App(props) {
     if (memoryItems) {
       setPurchasedItems(JSON.parse(memoryItems))
     }
-  }, []);
+  }, [setNumCookies, setPurchasedItems]);
   // create/update stored data after render
   React.useEffect(() => {
     localStorage.setItem('numOfCookies', JSON.stringify(numCookies));
