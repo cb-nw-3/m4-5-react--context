@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
-import items from "../data";
 import { GameContext } from "./GameContext";
 import useInterval from "../hooks/use-interval.hook";
 
@@ -17,18 +16,6 @@ function App() {
     purchasedItems,
     calculateCookiesPerSecond,
   } = React.useContext(GameContext);
-
-  React.useEffect(() => {
-    localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
-  }, [purchasedItems]);
-
-  React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
-    localStorage.setItem("numCookies", numCookies);
-    return () => {
-      document.title = "Cookie Clicker Workshop";
-    };
-  }, [numCookies]);
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
