@@ -45,6 +45,39 @@ export const GameProvider = ({ children }) => {
     }, 0);
   };
 
+  // #### PERSISTENT TAB CALCULATIONS ####
+
+  //this state will be set whenever a user closes the browser tab, it will
+  //set the timestamp for this event.
+  const [startTime, setStartTime] = usePersistedState(0, "startTime");
+
+  //When the component mounts, return a timestamp t1, and when the component
+  //unmounts because of the browser tab closing, it will store a timestamp t0
+  //into local storage for retrieval and calculation
+  React.useEffect(() => {
+    const t0 = window.localStorage.getItem("startTime");
+    const t1 = new Date().getTime();
+
+    let duration = Math.floor((t1 - t0) / 1000);
+
+    //Caclulate new number of cookies to add;
+    const numOfGeneratedCookies =
+      calculateCookiesPerSecond(purchasedItems) * duration;
+    setNumCookies(numCookies + numOfGeneratedCookies);
+
+    if (duration > 0) {
+      window.alert(
+        `You've earned ${numOfGeneratedCookies} cookies while you were gone for ${duration} seconds!`
+      );
+    }
+
+    window.addEventListener("beforeunload", (ev) => {
+      return setStartTime(new Date().getTime());
+    });
+
+    //no dependencies required, onle needs to run once at mount
+  }, []);
+
   //##### RENDER CONTEXT ####
   return (
     <GameContext.Provider
