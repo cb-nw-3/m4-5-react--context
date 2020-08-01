@@ -9,17 +9,11 @@ import Item from "./Item";
 
 import items from "../data";
 
-const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems }) => {
+import { GameContext } from './GameContext';
 
-  const calculateCookiesPerSecond = (purchasedItems) => {
-    return Object.keys(purchasedItems).reduce((acc, itemId) => {
-      const numOwned = purchasedItems[itemId];
-      const item = items.find((item) => item.id === itemId);
-      const value = item.value;
+const Game = () => {
 
-      return acc + value * numOwned;
-    }, 0);
-  };
+  const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond } = React.useContext(GameContext);
 
   // ok. let's think this through.
   // essentially, all the data that we have is supposed to go into localStorage

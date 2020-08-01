@@ -5,17 +5,11 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 
-import items from "../data";
+import { GameContext } from './GameContext';
 
 function App(props) {
 
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  // const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond } = React.useContext(GameContext);
 
   return (
     <>
@@ -25,11 +19,7 @@ function App(props) {
           <Home />
         </Route>
         <Route path="/game">
-          <Game
-            numCookies={numCookies}
-            setNumCookies={setNumCookies}
-            purchasedItems={purchasedItems}
-            setPurchasedItems={setPurchasedItems} />
+          <Game />
         </Route>
       </Router>
     </>
