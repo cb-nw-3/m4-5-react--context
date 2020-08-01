@@ -1,48 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import useInterval from "../hooks/use-interval.hook";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "../data";
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
+import { GameContext } from "./GameContext";
 
 const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(() => {
-    const data = localStorage.getItem("numCookies");
-    return data ? JSON.parse(data) : 1000;
-  });
-
-  const [purchasedItems, setPurchasedItems] = React.useState(() => {
-    const data = localStorage.getItem("purchasedItems");
-    return data ? JSON.parse(data) : { cursor: 0, grandma: 0, farm: 0 };
-  });
-
-  React.useEffect(() => {
-    localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
-  }, [purchasedItems]);
-
-  const incrementCookies = () => {
-    setNumCookies((c) => c + 1);
-  };
-
-  React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
-    localStorage.setItem("numCookies", numCookies);
-    return () => {
-      document.title = "Cookie Clicker Workshop";
-    };
-  }, [numCookies]);
+  let {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    calculateCookiesPerSecond,
+  } = React.useContext(GameContext);
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -56,11 +27,9 @@ const Game = () => {
     };
   });
 
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
+  const incrementCookies = () => {
+    setNumCookies((c) => c + 1);
+  };
 
   return (
     <Wrapper>
