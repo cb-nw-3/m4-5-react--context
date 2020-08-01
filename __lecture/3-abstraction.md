@@ -107,8 +107,28 @@ const Banner = ({ type, message, user }) => {
 
   // Only logged in users are allowed to see the banner
   if (!user) {
+      return null;
+    }
+
+  return (
+    <div style={{ backgroundColor: bg }}>
+      Notification from HelloPets.com: {message}
+    </div>
+  );
+};
+
+//solution
+
+const AuthenticatedBanner = ({user, type, message}) => {
+  if (!user) {
     return null;
   }
+
+  return <Banner type={type} message={message}>
+}
+const Banner = ({ type, message }) => {
+  const bg = type === "success" ? "green" : "red";
+
 
   return (
     <div style={{ backgroundColor: bg }}>
@@ -154,6 +174,28 @@ const ContactPage = () => {
         <p className="error">Please enter at least 100 characters.</p>
       )}
     </div>
+  );
+};
+
+//solution
+
+const Textarea = ({ label, value, minLength, handleChange }) => {
+  return (
+    <label>
+      {label}
+      <textarea
+        value={value}
+        onChange={(ev) => {
+          handleChange(ev.target.value);
+
+          if (ev.target.value.length < minLenght) {
+            setMessageError(true);
+          } else {
+            setMessageError(false);
+          }
+        }}
+      />
+    </label>
   );
 };
 ```
