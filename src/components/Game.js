@@ -25,6 +25,7 @@ const Game = () => {
     sessionStorage.setItem("cookieFirstLoad", true);
 
     setNumCookies(Number(localStorage.getItem("numCookies")));
+    setPurchasedItems(JSON.parse(localStorage.getItem("purchasedCookieItems")));
   }
 
   // second problem: we need to add the cookies we earned while off-page
@@ -113,6 +114,10 @@ const Game = () => {
                   ...purchasedItems,
                   [item.id]: purchasedItems[item.id] + 1,
                 });
+
+                let foo = JSON.stringify(purchasedItems);
+
+                window.localStorage.setItem("purchasedCookieItems", foo);
               }}
             />
           );
