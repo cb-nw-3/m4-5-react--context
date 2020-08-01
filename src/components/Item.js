@@ -1,63 +1,87 @@
 import React from "react";
 import styled from "styled-components";
 
-const Item = ({
-  index,
-  name,
-  cost,
-  value,
-  numOwned,
-  handleAttemptedPurchase,
-}) => {
-  const ref = React.useRef(null);
+const Item = ({ item, numOwned, handleClick, focusOnLoad }) => {
+  const buttonRef = React.useRef();
 
   React.useEffect(() => {
-    if (index === 0) {
-      ref.current.focus();
+    if (focusOnLoad) {
+      buttonRef.current.focus();
     }
-  }, [index]);
+  }, []);
+
+  let description = "descriptionMissing";
+
+  switch (item.type) {
+    case "cps":
+      description =
+        item.value === 1
+          ? `Produces: ${item.value} cookie/second.`
+          : `Produces: ${item.value} cookies/second.`;
+      break;
+    case "cursor":
+      description = `Adds 1 cookie per click.`;
+      break;
+  }
 
   return (
-    <Wrapper ref={ref} onClick={handleAttemptedPurchase}>
-      <Left>
-        <Name>{name}</Name>
-        <Info>
-          Cost: {cost} cookie(s). Produces {value} cookies/second.
-        </Info>
-      </Left>
-      <Right>{numOwned}</Right>
+    <Wrapper onClick={handleClick} ref={buttonRef}>
+      <div>
+        <Title>{item.name}</Title>
+        <Description>
+          <span>Cost: {item.cost} cookie(s). </span>
+          <span>{description} </span>
+        </Description>
+        {numOwned >= 1 && item.type === "cps" && (
+          <Production>
+            Currently producing <strong>{numOwned * item.value} </strong>
+            {numOwned * item.value === 1 ? "cookie " : "cookies "}
+            per second.
+          </Production>
+        )}
+      </div>
+      <Amount>{numOwned}</Amount>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.button`
-  width: 100%;
   display: flex;
+  width: 450px;
+  justify-content: space-between;
   align-items: center;
-  background: transparent;
   border: none;
-  border-bottom: 1px solid #444;
-  color: #fff;
+  border-bottom: 1px white solid;
+  background-color: transparent;
+  padding: 18px 0;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 4px;
   text-align: left;
-  padding: 15px 0;
+  color: white;
 `;
 
-const Left = styled.div`
-  flex: 1;
+const Description = styled.div`
+  color: grey;
+  & strong {
+    color: white;
+  }
 `;
 
-const Name = styled.h4`
-  font-size: 22px;
+const Production = styled.div`
+  color: grey;
+  margin-top: 4px;
+  text-align: left;
+
+  & strong {
+    color: white;
+  }
 `;
 
-const Info = styled.div`
-  color: #ccc;
-  font-size: 15px;
-`;
-
-const Right = styled.div`
-  font-size: 32px;
-  padding: 0 20px;
+const Amount = styled.h2`
+  font-size: 2em;
+  color: white;
 `;
 
 export default Item;
