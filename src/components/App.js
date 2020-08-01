@@ -5,6 +5,8 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 
+import items from "../data";
+
 function App(props) {
 
   const [numCookies, setNumCookies] = React.useState(1000);
@@ -20,10 +22,14 @@ function App(props) {
       <GlobalStyles />
       <Router>
         <Route exact path="/">
-          <Home numCookies={numCookies} />
+          <Home />
         </Route>
         <Route path="/game">
-          <Game />
+          <Game
+            numCookies={numCookies}
+            setNumCookies={setNumCookies}
+            purchasedItems={purchasedItems}
+            setPurchasedItems={setPurchasedItems} />
         </Route>
       </Router>
     </>
