@@ -3,15 +3,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import useInterval from "../hooks/use-interval.hook";
-
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
-
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
+import items from "../data";
 
 const calculateCookiesPerSecond = (purchasedItems) => {
   return Object.keys(purchasedItems).reduce((acc, itemId) => {
@@ -24,27 +18,27 @@ const calculateCookiesPerSecond = (purchasedItems) => {
 };
 
 const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
+  const [numCookies, setNumCookies] = React.useState(() => {
+    const data = localStorage.getItem("numCookies");
+    return data ? JSON.parse(data) : 1000;
   });
+
+  const [purchasedItems, setPurchasedItems] = React.useState(() => {
+    const data = localStorage.getItem("purchasedItems");
+    return data ? JSON.parse(data) : { cursor: 0, grandma: 0, farm: 0 };
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
+  }, [purchasedItems]);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
 
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
-
   React.useEffect(() => {
     document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
-
+    localStorage.setItem("numCookies", numCookies);
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
@@ -56,13 +50,17 @@ const Game = () => {
         incrementCookies();
       }
     };
-
     window.addEventListener("keydown", handleKeydown);
-
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     };
   });
+
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+
+    setNumCookies(numCookies + numOfGeneratedCookies);
+  }, 1000);
 
   return (
     <Wrapper>
