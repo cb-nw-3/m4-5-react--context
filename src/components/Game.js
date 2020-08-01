@@ -93,28 +93,28 @@ const Game = () => {
     setNumCookies((n) => n + 1 + calculateCookiesPerTick().perClick)
   );
 
-  // useEffect(() => {
-  //   if (window.localStorage.getItem('cookieClickerInfo') !== null) {
-  //     const loadedInfo = JSON.parse(
-  //       window.localStorage.getItem('cookieClickerInfo')
-  //     );
-  //     setPurchasedItems(loadedInfo.purchasedItems);
-  //     const timeWhenLoading = new Date();
-  //     const lapse = Math.floor(
-  //       Math.abs(timeWhenLoading - new Date(loadedInfo.time)) / 1000
-  //     );
-  //     console.log(
-  //       numCookies,
-  //       calculateCookiesPerSecond(purchasedItems),
-  //       purchasedItems,
-  //       lapse
-  //     );
-  //     setNumCookies(
-  //       loadedInfo.numCookies +
-  //         calculateCookiesPerSecond(loadedInfo.purchasedItems) * lapse
-  //     );
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (window.localStorage.getItem('cookieClickerInfo') !== null) {
+      const loadedInfo = JSON.parse(
+        window.localStorage.getItem('cookieClickerInfo')
+      );
+      setPurchasedItems(loadedInfo.purchasedItems);
+      const timeWhenLoading = new Date();
+      const lapse = Math.floor(
+        Math.abs(timeWhenLoading - new Date(loadedInfo.time)) / 1000
+      );
+      console.log(
+        numCookies,
+        calculateCookiesPerTick(purchasedItems),
+        purchasedItems,
+        lapse
+      );
+      setNumCookies(
+        loadedInfo.numCookies +
+          calculateCookiesPerTick(loadedInfo.purchasedItems) * lapse
+      );
+    }
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem(
