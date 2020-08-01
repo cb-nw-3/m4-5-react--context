@@ -25,18 +25,6 @@ const Game = ({}) => {
     setNumCookies(numCookies + cookiesPerClick);
   };
 
-  const clearData = () => {
-    localStorage.clear();
-    setNumCookies(0);
-    setPurchasedItems({
-      cursor: 0,
-      grandma: 0,
-      farm: 0,
-      portal: 0,
-      megaCursor: 0,
-    });
-  };
-
   const setPrices = (array) => {
     array.forEach((item) => {
       let cost = item.basePrice * item.growth ** purchasedItems[item.id];
@@ -52,7 +40,6 @@ const Game = ({}) => {
   useDocumentTitle(`${numCookies} cookies - Cookie Clicker`, `Cookie Clicker`);
 
   useKeydown("Space", addCookie);
-  useKeydown("KeyQ", clearData);
 
   const purchaseItem = (item) => {
     if (numCookies < item.cost) {
@@ -90,7 +77,7 @@ const Game = ({}) => {
           if (index === 0) {
             firstItem = true;
           }
-          console.log(entry, purchasedItems);
+          //console.log(entry, purchasedItems);
           return (
             <Item
               key={entry.id}

@@ -12,6 +12,7 @@ export const GameProvider = ({ children }) => {
     { cursor: 0, grandma: 0, farm: 0, portal: 0, megaCursor: 0 },
     "purchased-items"
   );
+  const [timeStamp, setTimeStamp] = usePersistedState(0, "timeStamp");
 
   const calculateCookiesPerSec = (purchasedItems) => {
     let numOfGeneratedCookies = 0;
@@ -32,6 +33,8 @@ export const GameProvider = ({ children }) => {
         purchasedItems,
         setPurchasedItems,
         cookiesPerSec: calculateCookiesPerSec(purchasedItems),
+        timeStamp,
+        setTimeStamp,
       }}
     >
       {children}
