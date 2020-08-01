@@ -83,7 +83,6 @@ const Game = () => {
     const reducerClick = (accumulator, current) =>
       accumulator + current.value * purchasedItems[current.id];
     additionalCookies.perClick = 1 + itemsPerClick.reduce(reducerClick, 0);
-    console.log('Additional Cookies per Sec', additionalCookies);
 
     return additionalCookies;
   };
@@ -103,16 +102,9 @@ const Game = () => {
       const lapse = Math.floor(
         Math.abs(timeWhenLoading - new Date(loadedInfo.time)) / 1000
       );
-      console.log(
-        'On load Info',
-        numCookies,
-        calculateCookiesPerTick(purchasedItems),
-        purchasedItems,
-        lapse
-      );
       setNumCookies(
         loadedInfo.numCookies +
-          calculateCookiesPerTick(loadedInfo.purchasedItems) * lapse
+          calculateCookiesPerTick(loadedInfo.purchasedItems).perSecond * lapse
       );
     }
   }, []);
@@ -120,7 +112,11 @@ const Game = () => {
   useEffect(() => {
     window.localStorage.setItem(
       'cookieClickerInfo',
-      JSON.stringify({ purchasedItems, numCookies, time: new Date() })
+      JSON.stringify({
+        purchasedItems,
+        numCookies: numCookies,
+        time: new Date(),
+      })
     );
   }, [numCookies, purchasedItems]);
 
@@ -128,7 +124,7 @@ const Game = () => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{addCommas(numCookies)} cookies</Total>
+          <Total>{numCookies} cookies</Total>
           <strong>{addCommas(calculateCookiesPerTick().perSecond)}</strong>{' '}
           cookies per second
           <br></br>
