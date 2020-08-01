@@ -4,73 +4,54 @@ import { Link } from "react-router-dom";
 
 import useInterval from "../hooks/use-interval.hook";
 
+import { GameContext } from "../components/GameContext";
+
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
-
 const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
+  // #### USE CONTEXT ####
+  //these are all of the states, functions, and data that we want to pass into
+  //the Game component, without having to create any props
 
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  const {
+    items,
+    calculateCookiesPerSecond,
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    incrementCookies,
+    useDocumentTitle,
+    useHandleKeydown,
+  } = React.useContext(GameContext);
 
-  const incrementCookies = () => {
-    setNumCookies((c) => c + 1);
-  };
+  // #### FUNCTIONS & HOOKS #####
+
+  //allows generation of cookies based on current item inventory every passing
+  //second
+  //already completed exercise 3 here
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
     setNumCookies(numCookies + numOfGeneratedCookies);
   }, 1000);
 
-  React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+  useDocumentTitle(numCookies);
 
-    return () => {
-      document.title = "Cookie Clicker Workshop";
-    };
-  }, [numCookies]);
+  useHandleKeydown("Space", incrementCookies);
 
-  React.useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === "Space") {
-        incrementCookies();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeydown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  });
+  // #### RENDER COMPONENT #####
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
-          per second
+          <strong>
+            {calculateCookiesPerSecond(purchasedItems, items)}
+          </strong>{" "}
+          cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
@@ -93,7 +74,6 @@ const Game = () => {
                   alert("Cannot afford item");
                   return;
                 }
-
                 setNumCookies(numCookies - item.cost);
                 setPurchasedItems({
                   ...purchasedItems,
@@ -104,10 +84,13 @@ const Game = () => {
           );
         })}
       </ItemArea>
+
       <HomeLink to="/">Return home</HomeLink>
     </Wrapper>
   );
 };
+
+// ################### STYLED COMPONENTS ######################
 
 const Wrapper = styled.div`
   display: flex;
