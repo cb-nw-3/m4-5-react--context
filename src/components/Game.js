@@ -124,7 +124,7 @@ const Game = () => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
+          <Total>{addCommas(numCookies)} cookies</Total>
           <strong>{addCommas(calculateCookiesPerTick().perSecond)}</strong>{' '}
           cookies per second
           <br></br>
