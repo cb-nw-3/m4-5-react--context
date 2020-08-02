@@ -13,6 +13,8 @@ function App(props) {
     grandma: 0,
     farm: 0,
   });
+
+  
   return (
     <>
       <GlobalStyles />

@@ -19,6 +19,8 @@ const calculateCookiesPerSecond = (purchasedItems) => {
 };
 
 const Game = (props) => {
+
+  
   const incrementCookies = () => {
     props.setNumCookies((c) => c + 1);
   };
