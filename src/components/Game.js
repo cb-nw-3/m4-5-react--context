@@ -7,7 +7,7 @@ import Item from "./Item";
 import items from "../data.js";
 import { GameContext } from "./GameContext";
 
-const Game = (props) => {
+const Game = () => {
   const {
     numCookies,
     setNumCookies,
@@ -20,6 +20,7 @@ const Game = (props) => {
     setNumCookies((c) => c + 1);
   };
 
+  //document title with live count of number of cookies
   React.useEffect(() => {
     document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
 
@@ -28,6 +29,7 @@ const Game = (props) => {
     };
   }, [numCookies]);
 
+  //keydown handle instead of clicking on cookie
   React.useEffect(() => {
     const handleKeydown = (ev) => {
       if (ev.code === "Space") {

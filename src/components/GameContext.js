@@ -1,12 +1,11 @@
 import React from "react";
-
 import items from "../data";
 import usePersistedState from "../hooks/use-persisted-state.hook";
-import useInterval from "../hooks/use-interval.hook";
 
 export const GameContext = React.createContext(null);
 
 export const GameProvider = ({ children }) => {
+  //persisting across closing and reopening the tab
   const [numCookies, setNumCookies] = usePersistedState("numCookies", 1000);
 
   const [purchasedItems, setPurchasedItems] = usePersistedState(
@@ -27,12 +26,6 @@ export const GameProvider = ({ children }) => {
       return acc + value * numOwned;
     }, 0);
   };
-
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
 
   return (
     <GameContext.Provider

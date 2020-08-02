@@ -14,3 +14,5 @@ export default function usePersistedState(name, defaultValue) {
 
   return [value, setValue];
 }
+
+//This hook is for persisting across closing and reopening the tab
