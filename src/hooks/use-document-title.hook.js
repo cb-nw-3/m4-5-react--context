@@ -1,3 +1,4 @@
+// Libraries
 import React from 'react';
 
 function useDocumentTitle({ title, fallbackTitle }) {
