@@ -17,16 +17,16 @@ const Game = (props) => {
   } = React.useContext(GameContext);
 
   const incrementCookies = () => {
-    props.setNumCookies((c) => c + 1);
+    setNumCookies((c) => c + 1);
   };
 
   React.useEffect(() => {
-    document.title = `${props.numCookies} cookies - Cookie Clicker Workshop`;
+    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
 
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
-  }, [props.numCookies]);
+  }, [numCookies]);
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -46,7 +46,7 @@ const Game = (props) => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{props.numCookies} cookies</Total>
+          <Total>{numCookies} cookies</Total>
           <strong>{cookiesPerSecond}</strong> cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
