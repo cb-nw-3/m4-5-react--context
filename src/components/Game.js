@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import useInterval from "../hooks/use-interval.hook";
-
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "../data.js";
+import { GameContext } from "./GameContext";
+
 
 const calculateCookiesPerSecond = (purchasedItems) => {
   return Object.keys(purchasedItems).reduce((acc, itemId) => {
@@ -18,26 +18,25 @@ const calculateCookiesPerSecond = (purchasedItems) => {
   }, 0);
 };
 
-const Game = (props) => {
+const Game = () => {
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+  } = React.useContext(GameContext);
 
-  
   const incrementCookies = () => {
-    props.setNumCookies((c) => c + 1);
+    setNumCookies((c) => c + 1);
   };
 
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(props.purchasedItems);
-
-    props.setNumCookies(props.numCookies + numOfGeneratedCookies);
-  }, 1000);
-
   React.useEffect(() => {
-    document.title = `${props.numCookies} cookies - Cookie Clicker Workshop`;
+    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
 
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
-  }, [props.numCookies]);
+  }, [numCookies]);
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -57,8 +56,8 @@ const Game = (props) => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{props.numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(props.purchasedItems)}</strong> cookies
+          <Total>{numCookies} cookies</Total>
+          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
           per second
         </Indicator>
         <Button onClick={incrementCookies}>
@@ -76,17 +75,17 @@ const Game = (props) => {
               name={item.name}
               cost={item.cost}
               value={item.value}
-              numOwned={props.purchasedItems[item.id]}
+              numOwned={purchasedItems[item.id]}
               handleAttemptedPurchase={() => {
-                if (props.numCookies < item.cost) {
+                if (numCookies < item.cost) {
                   alert("Cannot afford item");
                   return;
                 }
 
-                props.setNumCookies(props.numCookies - item.cost);
-                props.setPurchasedItems({
-                  ...props.purchasedItems,
-                  [item.id]: props.purchasedItems[item.id] + 1,
+                setNumCookies(numCookies - item.cost);
+                setPurchasedItems({
+                  ...purchasedItems,
+                  [item.id]: purchasedItems[item.id] + 1,
                 });
               }}
             />

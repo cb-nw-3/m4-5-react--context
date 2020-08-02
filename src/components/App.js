@@ -4,15 +4,19 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
-import items from "../data.js";
+
+import useInterval from "../hooks/use-interval.hook";
+import { GameContext } from "./GameContext";
+
 
 function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  const { numCookies, setNumCookies, cookiesPerSecond } = React.useContext(
+    GameContext
+  );
+
+  useInterval(() => {
+    setNumCookies(numCookies + cookiesPerSecond);
+  }, 1000);
 
   
   return (
@@ -23,12 +27,7 @@ function App(props) {
           <Home />
         </Route>
         <Route path="/game">
-          <Game 
-            numCookies={numCookies}
-            setNumCookies={setNumCookies}
-            purchasedItems={purchasedItems}
-            setPurchasedItems={setPurchasedItems}
-          />
+          <Game />
         </Route>
       </Router>
     </>

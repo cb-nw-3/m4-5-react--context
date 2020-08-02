@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const items = [
     { id: "cursor", name: "Cursor", cost: 10, value: 1 },
