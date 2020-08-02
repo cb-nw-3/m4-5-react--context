@@ -7,9 +7,8 @@ import { GameProvider } from './components/GameContext';
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-    - <App />
-    + <GameProvider>
-    +   <App />
-    + </GameProvider>,
-      rootElement
-    );
+    <GameProvider>
+      <App />
+    </GameProvider>,
+    rootElement
+  );

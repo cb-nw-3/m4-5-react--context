@@ -7,36 +7,26 @@ import Item from "./Item";
 import items from "../data.js";
 import { GameContext } from "./GameContext";
 
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
-
-const Game = () => {
+const Game = (props) => {
   const {
     numCookies,
     setNumCookies,
     purchasedItems,
     setPurchasedItems,
+    cookiesPerSecond,
   } = React.useContext(GameContext);
 
   const incrementCookies = () => {
-    setNumCookies((c) => c + 1);
+    props.setNumCookies((c) => c + 1);
   };
 
   React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+    document.title = `${props.numCookies} cookies - Cookie Clicker Workshop`;
 
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
-  }, [numCookies]);
+  }, [props.numCookies]);
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -56,9 +46,8 @@ const Game = () => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
-          per second
+          <Total>{props.numCookies} cookies</Total>
+          <strong>{cookiesPerSecond}</strong> cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
