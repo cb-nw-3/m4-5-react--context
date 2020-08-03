@@ -7,6 +7,8 @@ import items from "../data";
 import Item from "./Item";
 import { GameContext } from "./GameContext";
 
+import useKeyDown from "../hooks/use-event-keydown";
+
 const Game = () => {
   const {
     numCookies,
@@ -14,18 +16,27 @@ const Game = () => {
     purchasedItems,
     setPurchasedItems,
     cookiesPerSecond,
+    cost,
+    setCost
   } = React.useContext(GameContext)
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
 
+  //Add a global event listener
+  useKeyDown({
+    pressedKey: "Space",
+    callbackFunction: incrementCookies,
+  })
+
   React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+    document.title = `${Math.round(numCookies * 10) / 10} ${numCookies === 1 ? 'cookie' : 'cookies'} - Cookie Clicker Workshop`;
 
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
   }, [numCookies]);
+
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -45,8 +56,8 @@ const Game = () => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
-          <strong>{cookiesPerSecond}</strong> cookies
+          <Total>{Math.round(numCookies * 10) / 10} {numCookies === 1 ? 'cookie' : 'cookies'}</Total>
+          <strong>{Math.round(cookiesPerSecond * 10) / 10}</strong> cookies
           per second
         </Indicator>
         <Button onClick={incrementCookies}>
@@ -62,26 +73,30 @@ const Game = () => {
               key={item.id}
               index={index}
               name={item.name}
-              cost={item.cost}
+              cost={cost[item.id]}
               value={item.value}
               numOwned={purchasedItems[item.id]}
               handleAttemptedPurchase={() => {
-                if (numCookies < item.cost) {
-                  alert("Cannot afford item");
+                if (numCookies < cost[item.id]) {
+                  alert("You don't have enought cookies!");
                   return;
                 }
 
-                setNumCookies(numCookies - item.cost);
+                setNumCookies(numCookies - cost[item.id]);
                 setPurchasedItems({
                   ...purchasedItems,
                   [item.id]: purchasedItems[item.id] + 1,
                 });
+                setCost({
+                  ...cost,
+                  [item.id]: Math.floor(cost[item.id] * 1.2),
+                })
               }}
             />
           );
         })}
       </ItemArea>
-      <HomeLink to="/">Return home</HomeLink>
+      <HomeLink to="/">Home</HomeLink>
     </Wrapper>
   );
 };
@@ -121,6 +136,11 @@ const Button = styled.button`
 
 const Cookie = styled.img`
   width: 200px;
+
+  &:hover{
+    filter: drop-shadow(0px 0px 5px white);
+    cursor: pointer;
+  }
 `;
 
 const ItemArea = styled.div`

@@ -9,10 +9,19 @@ export const GameContext = React.createContext(null);
 export const GameProvider = ({ children }) => {
     const [numCookies, setNumCookies] = useLocalStorage(1000, 'cookies');
 
+    const initialCost = {
+        cursor: 10,
+        grandma: 100,
+        farm: 500,
+        factory: 2500,
+    };
+    const [cost, setCost] = useLocalStorage(initialCost, 'cost');
+
     const initialItems = {
         cursor: 0,
         grandma: 0,
         farm: 0,
+        factory: 0,
     }
 
     const [purchasedItems, setPurchasedItems] = useLocalStorage(initialItems, 'items');
@@ -24,7 +33,14 @@ export const GameProvider = ({ children }) => {
             cursor: 0,
             grandma: 0,
             farm: 0,
+            factory: 0,
         });
+        setCost({
+            cursor: 10,
+            grandma: 100,
+            farm: 500,
+            factory: 2500,
+        })
     };
     useKeyDown({
         pressedKey: "Delete",
@@ -68,6 +84,8 @@ export const GameProvider = ({ children }) => {
             setNumCookies,
             purchasedItems,
             setPurchasedItems,
+            cost,
+            setCost,
             cookiesPerSecond: calculateCookiesPerSecond(purchasedItems),
         }}>
             {children}

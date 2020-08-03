@@ -1,7 +1,8 @@
 const items = [
-    { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-    { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-    { id: "farm", name: "Farm", cost: 1000, value: 80 },
+    { id: "cursor", name: "Cursor", value: 0.2 },
+    { id: "grandma", name: "Grandma", value: 1 },
+    { id: "farm", name: "Farm", value: 2.5 },
+    { id: "factory", name: "Factory", value: 5 },
 ];
 
 export default items;
