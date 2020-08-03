@@ -13,4 +13,4 @@
 
 ## Ex 3
 
--
+- Moved usedInterval from "Game.js" to "GameContext.js"

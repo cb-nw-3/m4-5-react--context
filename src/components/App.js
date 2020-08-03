@@ -6,6 +6,9 @@ import Home from "./Home";
 import Game from "./Game";
 
 function App(props) {
+  // Exercise 1, copied from game.js
+  // Added custom hook
+
   return (
     <>
       <GlobalStyles />
@@ -14,7 +17,14 @@ function App(props) {
           <Home />
         </Route>
         <Route path="/game">
-          <Game />
+          {/* Exercise 1, created props */}
+          <Game
+          // gameItem={items}
+          // numCookies={numCookies}
+          // setNumCookies={setNumCookies}
+          // purchasedItems={purchasedItems}
+          // setPurchasedItems={setPurchasedItems}
+          />
         </Route>
       </Router>
     </>
