@@ -16,6 +16,7 @@ const Game = () => {
     cookiesPerSecond,
   } = React.useContext(GameContext);
 
+  //interval from ../hooks
   useInterval(() => {
     setNumCookies(numCookies + cookiesPerSecond);
   }, 1000);
