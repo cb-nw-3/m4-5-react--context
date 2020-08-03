@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import useInterval from "../hooks/use-interval.hook";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "../data.js";
@@ -15,6 +15,10 @@ const Game = () => {
     setPurchasedItems,
     cookiesPerSecond,
   } = React.useContext(GameContext);
+
+  useInterval(() => {
+    setNumCookies(numCookies + cookiesPerSecond);
+  }, 1000);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
