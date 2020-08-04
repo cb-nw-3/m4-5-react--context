@@ -28,15 +28,15 @@ const Game = () => {
     setNumCookies((c) => c + 1);
   };
 
-  // useInterval(() => {
-  //   console.log("numOfGeneratedCookies: ", purchasedItems);
-  //   const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-  //   console.log(
-  //     "numOfGeneratedCookies in use interval: ",
-  //     numOfGeneratedCookies
-  //   );
-  //   setNumCookies(numCookies + numOfGeneratedCookies);
-  // }, 1000);
+  useInterval(() => {
+    console.log("numOfGeneratedCookies: ", purchasedItems);
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+    console.log(
+      "numOfGeneratedCookies in use interval: ",
+      numOfGeneratedCookies
+    );
+    setNumCookies(numCookies + numOfGeneratedCookies);
+  }, 1000);
 
   React.useEffect(() => {
     document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
