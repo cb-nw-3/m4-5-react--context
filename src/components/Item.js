@@ -15,7 +15,7 @@ const Item = ({
     if (index === 0) {
       ref.current.focus();
     }
-  }, [index]);
+  }, []);
 
   return (
     <Wrapper ref={ref} onClick={handleAttemptedPurchase}>
