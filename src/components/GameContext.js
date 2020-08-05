@@ -16,6 +16,11 @@ export const GameProvider = ({ children }) => {
   const [numCookies, setNumCookies] = React.useState(initNumCookies);
 
   const [purchasedItems, setPurchasedItems] = React.useState(initPurchased);
+
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("lastUsed", new Date());
+  });
+
   return (
     <GameContext.Provider
       value={{
