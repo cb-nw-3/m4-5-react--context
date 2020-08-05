@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import useInterval from "../hooks/use-interval.hook";
+import { GameContext } from "./GameContext";
 
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
@@ -23,28 +24,17 @@ const items = [
 ];
 
 function App(props) {
-  const initNumCookies = localStorage.getItem("numCookies")
-    ? parseInt(localStorage.getItem("numCookies"))
-    : 1000;
-  const initPurchased = localStorage.getItem("purchasedItems")
-    ? JSON.parse(localStorage.getItem("purchasedItems"))
-    : {
-        cursor: 0,
-        grandma: 0,
-        farm: 0,
-      };
-
-  const [numCookies, setNumCookies] = React.useState(initNumCookies);
-
-  const [purchasedItems, setPurchasedItems] = React.useState(initPurchased);
+  const data = React.useContext(GameContext);
 
   useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+    const numOfGeneratedCookies = calculateCookiesPerSecond(
+      data.purchasedItems
+    );
 
-    setNumCookies(numCookies + numOfGeneratedCookies);
+    data.setNumCookies(data.numCookies + numOfGeneratedCookies);
 
-    localStorage.setItem("numCookies", numCookies.toString());
-    localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
+    localStorage.setItem("numCookies", data.numCookies.toString());
+    localStorage.setItem("purchasedItems", JSON.stringify(data.purchasedItems));
   }, 1000);
 
   return (
@@ -56,11 +46,11 @@ function App(props) {
         </Route>
         <Route path="/game">
           <Game
-            numCookies={numCookies}
-            setNumCookies={setNumCookies}
-            purchasedItems={purchasedItems}
-            setPurchasedItems={setPurchasedItems}
-            cookiesPerSecond={calculateCookiesPerSecond(purchasedItems)}
+            numCookies={data.numCookies}
+            setNumCookies={data.setNumCookies}
+            purchasedItems={data.purchasedItems}
+            setPurchasedItems={data.setPurchasedItems}
+            cookiesPerSecond={calculateCookiesPerSecond(data.purchasedItems)}
             items={items}
           />
         </Route>
