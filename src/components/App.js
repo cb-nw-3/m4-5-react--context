@@ -24,9 +24,6 @@ function calculateEarnedCookiesWhileDormant(initPurchasedItems, secondsGoneBy) {
 function App({ initial_cookies, last_date_stored, initPurchasedItems }) {
   let cookieContext = React.useContext(CookieContext);
 
-  // console.log("init vars");
-  // console.log({ initial_cookies, last_date_stored, initPurchasedItems });
-
   useInterval(() => {
     cookieContext.calculateCookiesPerTick(cookieContext.purchasedItems);
   }, 1000);

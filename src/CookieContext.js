@@ -1,21 +1,11 @@
 import React, { createContext, useState } from "react";
 import usePersistedState from "./hooks/use-persisted-state.hook";
-// import daveVerUsePersistedState from "./hooks/daveVerUsePersistedState.hook";
 
 export const CookieContext = createContext();
 
-// This context provider is passed to any component requiring the context
 export const CookieContextProvider = ({ children }) => {
-  /// ->>> Ask TC why the daveVer isn't working
-
-  // const [cookiesTotal, setCookiesTotal] = daveVerUsePersistedState(
-  //   1000,
-  //   "numCookies"
-  // );
-
   const [cookiesTotal, setCookiesTotal] = usePersistedState("numCookies", 1000);
 
-  // const [cookiesTotal, setCookiesTotal] = useState(100);
   const [cookiesPerSecond, setCookiesPerSecond] = useState(0);
   const [cookiesPerClick, setCookiesPerClick] = useState(0);
   const [purchasedItems, setPurchasedItems] = usePersistedState(
@@ -27,10 +17,6 @@ export const CookieContextProvider = ({ children }) => {
       megaCursor: 0,
     }
   );
-  // const [
-  //   numCookiesPeristentValue,
-  //   setNumCookiesPeristentValue,
-  // ] = usePersistedState(100, "numCookies");
 
   const [items, setItems] = useState({});
 
@@ -46,7 +32,6 @@ export const CookieContextProvider = ({ children }) => {
 
   React.useEffect(() => {
     var today = new Date();
-    // console.log(today);
     window.localStorage.setItem("lastDateStored", JSON.stringify(today));
   }, [cookiesTotal]);
 
@@ -58,14 +43,12 @@ export const CookieContextProvider = ({ children }) => {
         cookiesPerClick,
         purchasedItems,
         items,
-        // numCookiesPeristentValue,
         setCookiesTotal,
         setCookiesPerSecond,
         setItems,
         setPurchasedItems,
         setCookiesPerClick,
         calculateCookiesPerTick,
-        // setNumCookiesPeristentValue,
       }}
     >
       {children}

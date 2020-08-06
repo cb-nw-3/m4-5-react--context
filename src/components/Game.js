@@ -5,6 +5,7 @@ import Item from "./Item.js";
 import useKeydown from "../hooks/use-keydown.hook";
 import useDocumentTitle from "../hooks/useDocumentTitle.hook";
 import { CookieContext } from "../CookieContext";
+import handleGenericKeyPress from "../hooks/handleGenericKeyPress.hook";
 
 import {
   ItemButton,
@@ -26,7 +27,6 @@ const Game = ({ items }) => {
     cookieContext.setCookiesEarned(cookieContext.cookiesTotal + 1);
   }
 
-  // why does this work?  I'm not setting title except for here... seems like it's weird a hook
   useDocumentTitle({
     title: `${cookieContext.cookiesTotal} cookies - Cookie Clicker Workshop`,
     fallbackTitle: `Cookie Clicker`,
@@ -34,13 +34,13 @@ const Game = ({ items }) => {
 
   useKeydown("Space", IncreaseCookie);
 
+  /// NOTE TO REVIEWERS - I WOULD LIKE TO DISCUSS WHY MY "CUSTOM" HOOK handleGenericKeyPress DOESN'T WORK.  CAN'T FIGURE IT OUT! :)
+
+  // handleGenericKeyPress("Space", IncreaseCookie);
+
   React.useEffect(() => {
     cookieContext.setItems(items);
   }, [items]);
-
-  // useInterval(() => {
-  //   cookieContext.calculateCookiesPerTick(cookieContext.purchasedItems);
-  // }, 1000);
 
   function HandleCookieClick(event) {
     let extra_cookies = cookieContext.purchasedItems.megaCursor * 2;
@@ -52,11 +52,9 @@ const Game = ({ items }) => {
   }
 
   function HandleItemClick(event) {
-    // console.log(event.target.parentNode.className);
     let item_from_items_list = cookieContext.items.find(
       (e) => e.id === event.target.parentNode.className
     );
-    // console.log(item_from_items_list);
 
     let local_purchased = cookieContext.purchasedItems;
 
