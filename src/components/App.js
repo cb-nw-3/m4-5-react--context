@@ -4,15 +4,25 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
+import useInterval from "../hooks/use-interval.hook";
+
+import useSavedState from "../hooks/use-saved-state.hook";
+import calculateCookiesPerSecond from "./CalculateCookiesPerSecond";
 
 function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
+  const [numCookies, setNumCookies] = useSavedState("numCookies", 1000);
 
-  const [purchasedItems, setPurchasedItems] = React.useState({
+  const [purchasedItems, setPurchasedItems] = useSavedState("purhasedItems", {
     cursor: 0,
     grandma: 0,
     farm: 0,
   });
+
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
+
+    setNumCookies(numCookies + numOfGeneratedCookies);
+  }, 1000);
 
   return (
     <>
