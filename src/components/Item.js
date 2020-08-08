@@ -22,7 +22,7 @@ const Item = ({
       <Left>
         <Name>{name}</Name>
         <Info>
-          Cost: {cost} cookie(s). Produces {value} cookies/second.
+          Cost: {cost} cookies. Produces {value} {value === 1 ? 'cookie' : 'cookies'}/second.
         </Info>
       </Left>
       <Right>{numOwned}</Right>
@@ -37,9 +37,21 @@ const Wrapper = styled.button`
   background: transparent;
   border: none;
   border-bottom: 1px solid #444;
-  color: #fff;
   text-align: left;
-  padding: 15px 0;
+  padding: 15px 5px;
+  outline: none;
+  cursor: pointer;
+
+  &:focus{
+      box-shadow: 0px 0px 4px 4px darkblue;
+      border-radius: 2px;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+  }
+
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 const Left = styled.div`
@@ -51,8 +63,7 @@ const Name = styled.h4`
 `;
 
 const Info = styled.div`
-  color: #ccc;
-  font-size: 15px;
+  font-size: 16px;
 `;
 
 const Right = styled.div`

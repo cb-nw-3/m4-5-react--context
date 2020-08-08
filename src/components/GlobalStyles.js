@@ -63,12 +63,21 @@ export default createGlobalStyle`
 
     body {
         line-height: 1.25;
-        background: #222;
-        color: white;
+        background: ${({ theme }) => theme.body};
+        color: ${({ theme }) => theme.text};
+        transition: all 0.25s linear;
+    }
+
+    h4{
+        color: ${({ theme }) => theme.text};
+    }
+
+    div{
+        color: ${({ theme }) => theme.text};
     }
 
     a {
-        color: #69ffcf;
         text-decoration: none;
+        color: ${({ theme }) => theme.text};
     }
 `;

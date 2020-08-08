@@ -2,53 +2,41 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import useInterval from "../hooks/use-interval.hook";
-
 import cookieSrc from "../cookie.svg";
+import items from "../data";
 import Item from "./Item";
+import { GameContext } from "./GameContext";
 
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
+import useKeyDown from "../hooks/use-event-keydown";
 
 const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
-
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerSecond,
+    cost,
+    setCost
+  } = React.useContext(GameContext)
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
 
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
+  //Add a global event listener
+  useKeyDown({
+    pressedKey: "Space",
+    callbackFunction: incrementCookies,
+  })
 
   React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+    document.title = `${Math.round(numCookies * 10) / 10} ${numCookies === 1 ? 'cookie' : 'cookies'} - Cookie Clicker Workshop`;
 
     return () => {
       document.title = "Cookie Clicker Workshop";
     };
   }, [numCookies]);
+
 
   React.useEffect(() => {
     const handleKeydown = (ev) => {
@@ -68,8 +56,8 @@ const Game = () => {
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
+          <Total>{Math.round(numCookies * 10) / 10} {numCookies === 1 ? 'cookie' : 'cookies'}</Total>
+          <strong>{Math.round(cookiesPerSecond * 10) / 10}</strong> cookies
           per second
         </Indicator>
         <Button onClick={incrementCookies}>
@@ -85,38 +73,55 @@ const Game = () => {
               key={item.id}
               index={index}
               name={item.name}
-              cost={item.cost}
+              cost={cost[item.id]}
               value={item.value}
               numOwned={purchasedItems[item.id]}
               handleAttemptedPurchase={() => {
-                if (numCookies < item.cost) {
-                  alert("Cannot afford item");
+                if (numCookies < cost[item.id]) {
+                  alert("You don't have enought cookies!");
                   return;
                 }
 
-                setNumCookies(numCookies - item.cost);
+                setNumCookies(numCookies - cost[item.id]);
                 setPurchasedItems({
                   ...purchasedItems,
                   [item.id]: purchasedItems[item.id] + 1,
                 });
+                setCost({
+                  ...cost,
+                  [item.id]: Math.floor(cost[item.id] * 1.2),
+                })
               }}
             />
           );
         })}
       </ItemArea>
-      <HomeLink to="/">Return home</HomeLink>
+      <HomeLink to="/">Home</HomeLink>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100vh;
+
+  @media (min-width: 600px){
+    flex-direction: row;
+  }
 `;
+
 const GameArea = styled.div`
   flex: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
   place-items: center;
+
+  @media (min-width: 600px){
+    display: grid;
+    place-items: center;
+  }
 `;
 const Button = styled.button`
   border: none;
@@ -131,11 +136,16 @@ const Button = styled.button`
 
 const Cookie = styled.img`
   width: 200px;
+
+  &:hover{
+    filter: drop-shadow(0px 0px 5px white);
+    cursor: pointer;
+  }
 `;
 
 const ItemArea = styled.div`
   height: 100%;
-  padding-right: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -144,29 +154,34 @@ const ItemArea = styled.div`
 const SectionTitle = styled.h3`
   text-align: center;
   font-size: 32px;
-  color: yellow;
+  color: #9b870c;
+
 `;
 
 const Indicator = styled.div`
-  position: absolute;
+  margin-bottom: 20px;
   width: 250px;
+  text-align: center;
+
+  @media (min-width: 600px){
+  display: block;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   margin: auto;
-  text-align: center;
+  }
 `;
 
 const Total = styled.h3`
   font-size: 28px;
-  color: lime;
+  color: #0da715;
 `;
 
 const HomeLink = styled(Link)`
   position: absolute;
   top: 15px;
   left: 15px;
-  color: #666;
 `;
 
 export default Game;
