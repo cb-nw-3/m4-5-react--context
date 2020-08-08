@@ -2,46 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Item from "./Item";
-import useInterval from "../hooks/use-interval.hook";
+import items from "../data";
+import useKeydown from "../hooks/use-keydown.hook";
 
 import cookieSrc from "../cookie.svg";
 
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
-
-const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(100);
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
-
-  const calculateCookiesPerTick = (purchasedItems) => {
-    let totalCookies = 0;
-    console.log(purchasedItems);
-    //loop over purchased items
-    Object.keys(purchasedItems).forEach((purchasedItem) => {
-      //get individual purchased item amount
-      let purchasedItemAmount = purchasedItems[purchasedItem];
-      //Look through items for the purchased item and get the value
-      let findItem = items.find((item) => {
-        return item.id === purchasedItem;
-      });
-      //Individual purchase item and times it by the value of that item
-      totalCookies += purchasedItemAmount * findItem.value;
-    });
-    return totalCookies;
-  };
-
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
-
+const Game = ({
+  numCookies,
+  setNumCookies,
+  purchasedItems,
+  setPurchasedItems,
+  calculateCookiesPerTick,
+}) => {
   React.useEffect(() => {
     document.title = `${numCookies} cookies | Cookie Game`;
     return () => {
@@ -49,17 +21,11 @@ const Game = () => {
     };
   }, [numCookies]);
 
-  const handleKeyPress = (ev) => {
-    if (ev.key === 32) {
-      setNumCookies(numCookies + 1);
-    }
-  };
-
   React.useEffect(() => {
-    window.addEventListener("keyPress", handleKeyPress);
+    window.addEventListener("keyPress", useKeydown);
 
     return () => {
-      window.removeEventListener("keyPress", handleKeyPress);
+      window.removeEventListener("keyPress", useKeydown);
     };
   }, [numCookies]);
 
@@ -88,7 +54,7 @@ const Game = () => {
             <Item
               key={item.id}
               name={item.name}
-              numOwned={purchasedItems}
+              numOwned={purchasedItems[item.id]}
               handleClick={() => {
                 if (item.cost > numCookies) {
                   window.alert(
@@ -97,8 +63,10 @@ const Game = () => {
                   return;
                 } else {
                   setNumCookies(numCookies - item.cost);
-                  purchasedItems[item.id] += 1;
-                  setPurchasedItems(purchasedItems);
+                  setPurchasedItems({
+                    ...purchasedItems,
+                    [item.id]: purchasedItems[item.id] + 1,
+                  });
                 }
               }}
             />
