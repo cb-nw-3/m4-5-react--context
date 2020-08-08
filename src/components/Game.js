@@ -41,10 +41,8 @@ const Game = () => {
             <GameArea>
                 <Indicator>
                     <Total>{numCookies} cookies</Total>
-                    <strong>
-                        {calculateCookiesPerSecond(purchasedItems)}
-                    </strong>{' '}
-                    cookies per second
+                    <strong>{calculateCookiesPerSecond}</strong> cookies per
+                    second
                 </Indicator>
                 <Button onClick={incrementCookies} ref={cookieRef}>
                     <Cookie src={cookieSrc} />
