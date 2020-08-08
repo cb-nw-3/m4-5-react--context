@@ -11,14 +11,17 @@ import items from '../data';
 import cookieSrc from '../styles/cookie.svg';
 // Components
 import Item from './Item';
+import { GameContext } from './GameContext';
 
-const Game = ({
-    numCookies,
-    setNumCookies,
-    purchasedItems,
-    setPurchasedItems,
-    calculateCookiesPerSecond,
-}) => {
+const Game = () => {
+    const {
+        numCookies,
+        setNumCookies,
+        purchasedItems,
+        setPurchasedItems,
+        calculateCookiesPerSecond,
+    } = React.useContext(GameContext);
+
     const cookieRef = React.useRef(null);
 
     const incrementCookies = () => {

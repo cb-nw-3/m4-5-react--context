@@ -1,7 +1,6 @@
-// Libraries
 import React from 'react';
 
-function usePersistedState(defaultValue, name) {
+export default function usePersistedState(name, defaultValue) {
     const [value, setValue] = React.useState(() => {
         const localStorageValue = window.localStorage.getItem(name);
 
@@ -18,5 +17,3 @@ function usePersistedState(defaultValue, name) {
 
     return [value, setValue];
 }
-
-export default usePersistedState;
