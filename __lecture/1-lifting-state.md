@@ -49,6 +49,38 @@ const MainContent = () => {
 };
 ```
 
+<!-- After updates -->
+
+```js
+const App = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+  return (
+    <>
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <MainContent />
+    </>
+  );
+};
+
+const Header = ({ searchTerm, setSearchTerm }) => {
+  return (
+    <header>
+      <Logo />
+      <SearchInput value={searchTerm} onChange={setSearchTerm} />
+    </header>
+  );
+};
+
+const MainContent = ({ searchTerm }) => {
+  return (
+    <main>
+      {/* how do I access `searchTerm`? */}
+      Search results for {searchTerm}
+    </main>
+  );
+};
+```
+
 ---
 
 By _lifting state up_ to a parent or grandparent, we can pass that data around via props.
@@ -59,6 +91,7 @@ By _lifting state up_ to a parent or grandparent, we can pass that data around v
 # Exercise
 
 Lift state up
+-->
 
 ---
 
@@ -69,12 +102,12 @@ const App = () => {
       <Header />
       <WelcomeBack />
     </>
-  )
+  );
 };
 
 const Header = () => {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [user, setUser] = React.useState(null);
 
   return (
@@ -82,14 +115,10 @@ const Header = () => {
       onSubmit={() => {
         logInUser(username, password).then((user) => {
           setUser(user);
-        })
+        });
       }}
     >
-      <Input
-        label="Username"
-        value={username}
-        handleChange={setUsername}
-      />
+      <Input label="Username" value={username} handleChange={setUsername} />
       <Input
         label="Password"
         type="password"
@@ -98,16 +127,12 @@ const Header = () => {
       />
       <button>Submit</button>
     </>
-  )
-}
+  );
+};
 
 const WelcomeBack = () => {
-  return (
-    <div>
-      Welcome back, {user.displayName}!
-    </div>
-  )
-}
+  return <div>Welcome back, {user.displayName}!</div>;
+};
 ```
 
 ---
@@ -119,17 +144,16 @@ const App = () => {
       <SearchBar />
       <Main />
     </>
-  )
-}
+  );
+};
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   return (
     <form
       onSubmit={() => {
-        fetchSearchResults(searchTerm)
-          .then(results => console.log(results))
+        fetchSearchResults(searchTerm).then((results) => console.log(results));
       }}
     >
       <Input
@@ -139,8 +163,8 @@ const SearchBar = () => {
       />
       <Button>Go</Button>
     </form>
-  )
-}
+  );
+};
 
 const Main = () => {
   return (
@@ -148,16 +172,16 @@ const Main = () => {
       <News />
       <SearchResults />
     </>
-  )
-}
+  );
+};
 
 const SearchResults = () => {
-  return searchResults.map(result => (
+  return searchResults.map((result) => (
     <SearchResult
       key={result.id}
       title={result.title}
       description={result.description}
     />
-  ))
-}
+  ));
+};
 ```

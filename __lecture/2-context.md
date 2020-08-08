@@ -83,6 +83,75 @@ const LoginDialogTrigger = () => {
 };
 ```
 
+<!-- After updates -->
+
+```js
+const App = () => {
+  const [user, setUser] = React.useState(null);
+
+  return (
+    <>
+      <Home setUser={setUser} />
+      <Sidebar user={user} />
+    </>
+  );
+};
+
+const Home = ({ setUser }) => {
+  return (
+    <>
+      <Header />
+      <MainContent />
+    </>
+  );
+};
+
+const Header = ({ setUser }) => {
+  return (
+    <header>
+      <Navigation setUser={setUser} />
+    </header>
+  );
+};
+
+const Navigation = ({ setUser }) => {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        {user ? (
+          <li>
+            <Link to="/log-out">Log out</Link>
+          </li>
+        ) : (
+          <li>
+            <LoginDialogTrigger setUser={setUser} />
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
+
+const LoginDialogTrigger = ({ setUser }) => {
+  // Some stuff to show a button and handle showing
+  // the dialog on click
+
+  return (
+    <form
+      onSubmit={() => {
+        /* Validate that the credentials are right */
+        setUser(user);
+      }}
+    >
+      {/* Imagine a typical login form here */}
+    </form>
+  );
+};
+```
+
 ---
 
 This is no fun!
@@ -122,6 +191,24 @@ const App = () => {
 };
 ```
 
+<!-- After updates -->
+
+```js
+export const AppContext = React.createContext(null);
+
+const App = () => {
+  const [searchTerm, setSearchTerm] = React.userState("");
+  return (
+    <AppContext.Provider value={{ searchTerm }}>
+      <Header />
+      <Main>
+        <YourAppHere />
+      </Main>
+    </AppContext.Provider>
+  );
+};
+```
+
 ---
 
 # How it works
@@ -129,10 +216,10 @@ const App = () => {
 Next, we can _consume_ that context anywhere below the Provider with `useContext`.
 
 ```js
-import { UserContext } from "../App";
+import { AppContext } from "../App";
 
 const Profile = () => {
-  const data = React.useContext(UserContext);
+  const data = React.useContext(AppContext);
 
   console.log(data); // { username: 'Alfalfa' }
 
@@ -173,6 +260,74 @@ const Header = ({ user, setUser }) => {
 };
 
 const Navigation = ({ user, setUser }) => {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        {user && (
+          <li>
+            <button onClick={() => setUser(null)}>Log out</button>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
+```
+
+<!-- After updates -->
+
+```jsx
+// src/UserContext.js
+const UserContext = React.createContext();
+
+export default UserContext;
+
+// App.js
+import UserContext from "./src/UserContext";
+
+// under its own file
+const App = () => {
+  const [user, setUser] = React.useState({ username: "Alfalfa" });
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      <Home />;
+    </UserContext.Provider>
+  );
+};
+
+// under its own file
+const Home = () => {
+  return (
+    <>
+      <Header />
+      <MainContent />
+    </>
+  );
+};
+
+// under its own file
+const Header = () => {
+  return (
+    <header>
+      <Navigation />
+    </header>
+  );
+};
+
+// src/Navigation.js
+import UserContext from "./src/UserContext";
+
+const Navigation = () => {
+  // deconstructing assignments
+  const { user, setUser } = React.useContext(useContext);
+
   return (
     <nav>
       <ul>
