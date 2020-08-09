@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import useInterval from "../hooks/use-interval.hook";
 import { GameContext } from "./GameContext";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
@@ -13,6 +14,11 @@ function App(props) {
     setPurchasedItems,
     calculateCookiesPerTick,
   } = React.useContext(GameContext);
+
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
+    setNumCookies(numCookies + numOfGeneratedCookies);
+  }, 1000);
 
   return (
     <>

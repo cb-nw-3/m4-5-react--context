@@ -1,6 +1,5 @@
 import React from "react";
 import useLocalStorage from "../hooks/use-local-storage.hook";
-import useInterval from "../hooks/use-interval.hook";
 import items from "../data";
 
 export const GameContext = React.createContext(null);
@@ -34,11 +33,6 @@ export const GameProvider = ({ children }) => {
     });
     return totalCookies;
   };
-
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
 
   return (
     <GameContext.Provider
