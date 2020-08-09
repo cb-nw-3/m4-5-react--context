@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import Item from "./Item";
 import items from "../data";
 import useKeydown from "../hooks/use-keydown.hook";
+import { GameContext } from "./GameContext";
 
 import cookieSrc from "../cookie.svg";
 
-const Game = ({
-  numCookies,
-  setNumCookies,
-  purchasedItems,
-  setPurchasedItems,
-  calculateCookiesPerTick,
-}) => {
+const Game = () => {
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    calculateCookiesPerTick,
+  } = React.useContext(GameContext);
+
   React.useEffect(() => {
     document.title = `${numCookies} cookies | Cookie Game`;
     return () => {
