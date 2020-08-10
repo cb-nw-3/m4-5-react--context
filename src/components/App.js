@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import useInterval from "../hooks/use-interval.hook";
@@ -8,11 +8,17 @@ import Game from "./Game";
 import items from '../data';
 
 function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
+  if (localStorage.getItem('numCookies') === 'undefined') {
+    localStorage.setItem('numCookies', 1000);
+    localStorage.setItem('cursorOwned', 0);
+    localStorage.setItem('grandmaOwned', 0);
+    localStorage.setItem('farmOwned', 0);
+  }
+  const [numCookies, setNumCookies] = React.useState(Number(localStorage.getItem('numCookies')));
   const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
+    cursor: Number(localStorage.getItem('cursorOwned')),
+    grandma: Number(localStorage.getItem('grandmaOwned')),
+    farm: Number(localStorage.getItem('farmOwned')),
   });
 
   const calculateCookiesPerSecond = (purchasedItems) => {
@@ -30,6 +36,13 @@ function App(props) {
   useInterval(() => {
     setNumCookies(numCookies + numOfGeneratedCookies);
   }, 1000);
+
+  useEffect(() => {
+    localStorage.setItem('numCookies', numCookies);
+    localStorage.setItem('cursorOwned', purchasedItems.cursor);
+    localStorage.setItem('grandmaOwned', purchasedItems.grandma);
+    localStorage.setItem('farmOwned', purchasedItems.farm);
+  })
 
   return (
     <>
