@@ -10,7 +10,6 @@ const Item = ({
   handleAttemptedPurchase,
 }) => {
   const ref = React.useRef(null);
-
   React.useEffect(() => {
     if (index === 0) {
       ref.current.focus();

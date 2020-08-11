@@ -1,45 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import items from "../data";
-import useDocumentTitle from "../hooks/use-document-title.hook";
-import useKeydown from "../hooks/use-keydown.hook";
-
+import GameContext from "./GameContext";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
-import { GameContext } from "./GameContext";
-
+import { items } from "../data";
 const Game = () => {
   const {
     numCookies,
     setNumCookies,
     purchasedItems,
     setPurchasedItems,
-    cookiesPerSecond,
+    calculateCookiesPerSecond,
   } = React.useContext(GameContext);
-
-  useDocumentTitle({
-    title: `${numCookies} cookies - Cookie Clicker Workshop`,
-    fallbackTitle: "Cookie Clicker Workshop",
+  const incrementCookies = () => {
+    setNumCookies((c) => c + 1);
+  };
+  React.useEffect(() => {
+    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
+    return () => {
+      document.title = "Cookie Clicker Workshop";
+    };
+  }, [numCookies]);
+  React.useEffect(() => {
+    const handleKeydown = (ev) => {
+      if (ev.code === "Space") {
+        incrementCookies();
+      }
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
   });
-
-  const incrementCookies = () => setNumCookies((cookies) => cookies + 1);
-
-  useKeydown("Space", incrementCookies);
-
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{cookiesPerSecond}</strong> cookies per second
+          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
+          per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
         </Button>
       </GameArea>
-
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
         {items.map((item, index) => {
@@ -56,7 +61,6 @@ const Game = () => {
                   alert("Cannot afford item");
                   return;
                 }
-
                 setNumCookies(numCookies - item.cost);
                 setPurchasedItems({
                   ...purchasedItems,
@@ -71,7 +75,6 @@ const Game = () => {
     </Wrapper>
   );
 };
-
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -86,16 +89,13 @@ const Button = styled.button`
   background: transparent;
   cursor: pointer;
   transform-origin: center center;
-
   &:active {
     transform: scale(0.9);
   }
 `;
-
 const Cookie = styled.img`
   width: 200px;
 `;
-
 const ItemArea = styled.div`
   height: 100%;
   padding-right: 20px;
@@ -103,13 +103,11 @@ const ItemArea = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-
 const SectionTitle = styled.h3`
   text-align: center;
   font-size: 32px;
   color: yellow;
 `;
-
 const Indicator = styled.div`
   position: absolute;
   width: 250px;
@@ -119,17 +117,14 @@ const Indicator = styled.div`
   margin: auto;
   text-align: center;
 `;
-
 const Total = styled.h3`
   font-size: 28px;
   color: lime;
 `;
-
 const HomeLink = styled(Link)`
   position: absolute;
   top: 15px;
   left: 15px;
   color: #666;
 `;
-
 export default Game;
