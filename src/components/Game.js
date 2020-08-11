@@ -1,38 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { GameContext } from "./GameContext";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from '../data';
 
-// const calculateCookiesPerSecond = (purchasedItems) => {
-//   return Object.keys(purchasedItems).reduce((acc, itemId) => {
-//     const numOwned = purchasedItems[itemId];
-//     const item = items.find((item) => item.id === itemId);
-//     const value = item.value;
-
-//     return acc + value * numOwned;
-//   }, 0);
-// };
-
 const Game = (props) => {
-  // Renaming the props for easier use
-  const numCookies = props.numCookies;
-  const setNumCookies = props.setNumCookies;
-  const purchasedItems = props.purchasedItems;
-  const setPurchasedItems = props.setPurchasedItems;
-  const numOfGeneratedCookies = props.numOfGeneratedCookies;
+  const {numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    numOfGeneratedCookies
+  } = React.useContext(GameContext);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
-
-  // useInterval(() => {
-  //   const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-  //   setNumCookies(numCookies + numOfGeneratedCookies);
-  // }, 1000);
 
   React.useEffect(() => {
     document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
