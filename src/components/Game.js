@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import items from "./data";
-import calculateCookiesPerSecond from "./CalculateCookiesPerSecond";
+import { GameContext } from "./GameContext";
 
-const Game = ({
-  numCookies,
-  setNumCookies,
-  purchasedItems,
-  setPurchasedItems,
-}) => {
+const Game = () => {
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerSecond,
+  } = React.useContext(GameContext);
+
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
@@ -44,8 +47,7 @@ const Game = ({
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
-          per second
+          <strong>{cookiesPerSecond}</strong> cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
