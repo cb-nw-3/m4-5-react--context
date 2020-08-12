@@ -7,7 +7,7 @@ export const GameContext = React.createContext(null);
 export const GameProvider = ({ children }) => {
   const [numCookies, setNumCookies] = useSavedState("numCookies", 1000);
 
-  const [purchasedItems, setPurchasedItems] = useSavedState("purhasedItems", {
+  const [purchasedItems, setPurchasedItems] = useSavedState("purchasedItems", {
     cursor: 0,
     grandma: 0,
     farm: 0,
