@@ -5,7 +5,12 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 
+import { GameContext } from './GameContext';
+
 function App(props) {
+
+  // const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, calculateCookiesPerSecond } = React.useContext(GameContext);
+
   return (
     <>
       <GlobalStyles />
