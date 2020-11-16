@@ -4,7 +4,19 @@
 
 ### The "prop-drilling" problem.
 
+<<<<<<< HEAD
+---
+
+First, we creat a Context, and make it available to the React tree with <Context.Provider>:
+
+Next, we can consume that context anywhere below the Provider with useContext.
+
+---
+
+### Example: An e-commerce app with search
+=======
 "Lifting state" is a great trick.
+>>>>>>> parent/master
 
 Sometimes, it introduces a new problem though.
 
